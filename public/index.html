@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Supplier List | Supplier Directory</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230d9488'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ Design tokens ============ */
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --hover:#f6f9fc;
+  --ink:#10202f; --ink-2:#33475c; --muted:#64748b; --faint:#8ea0b3;
+  --line:#e7ecf3; --line-2:#dbe3ec;
+  --navy:#0e2236; --navy-2:#17334f;
+  --teal:#0d9488; --teal-bright:#14b8a6; --red:#dc3d43;
+  --font-display:"Plus Jakarta Sans","Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --shadow-sm:0 1px 2px rgba(16,32,47,.06);
+  --shadow:0 1px 2px rgba(16,32,47,.05),0 10px 28px -10px rgba(16,32,47,.12);
+  --shadow-lg:0 2px 8px rgba(16,32,47,.08),0 32px 70px -18px rgba(7,24,40,.35);
+  --ring:0 0 0 3.5px rgba(20,184,166,.16);
+}
+/* ============ Base ============ */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 13.5px/1.55 var(--font-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(1000px 520px at 88% -12%,rgba(20,184,166,.08),transparent 62%),
+  radial-gradient(900px 620px at -12% 28%,rgba(14,34,54,.05),transparent 60%)}
+h1,h2,h3{font-family:var(--font-display)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+svg{vertical-align:middle}
+::selection{background:rgba(20,184,166,.22)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#c6d1de;border-radius:99px;border:2.5px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#aebccd}
+*{scrollbar-width:thin;scrollbar-color:#c6d1de transparent}
+:where(button):focus-visible{outline:2px solid var(--teal-bright);outline-offset:2px;border-radius:8px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
+/* ============ Layout ============ */
+.app{display:grid;grid-template-columns:266px minmax(0,1fr);min-height:100vh}
+.main{min-width:0}
+/* ============ Sidebar ============ */
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:24px;padding:22px 14px 16px;color:#c2d2e0;
+  background:
+    radial-gradient(340px 300px at 110% -50px,rgba(20,184,166,.22),transparent 70%),
+    radial-gradient(320px 320px at -70px 105%,rgba(59,130,246,.14),transparent 70%),
+    linear-gradient(175deg,#0e2236 0%,#132c46 55%,#17334f 100%)}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 8px}
+.logo{height:40px;width:40px;flex:none;border-radius:12px;background:linear-gradient(140deg,#2dd4bf,#0d9488 60%,#0b7c72);display:grid;place-items:center;color:#fff;font-family:var(--font-display);font-weight:800;font-size:19px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 0 0 1px rgba(45,212,191,.25),0 8px 20px -6px rgba(20,184,166,.6)}
+.brand strong{display:block;font-family:var(--font-display);font-size:16px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.brand small{display:block;color:#8ba2b8;font-size:10.5px;margin-top:2px;letter-spacing:.2px}
+.nav-label{font-size:9.5px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase;color:#7e95ab;padding:0 12px;margin-bottom:7px}
+.nav{display:grid;gap:3px}
+.nav button{position:relative;display:flex;align-items:center;gap:11px;width:100%;padding:9.5px 11px;border-radius:10px;text-align:left;font-size:13px;font-weight:500;color:#b9cad9;transition:background .15s,color .15s,box-shadow .15s}
+.nav .ico{display:grid;place-items:center;width:18px;height:18px;flex:none;color:#8ea6bb;transition:color .15s}
+.nav .ico svg{width:17px;height:17px}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button:hover .ico{color:#d9e6ee}
+.nav button.active{background:linear-gradient(90deg,rgba(20,184,166,.18),rgba(20,184,166,.06) 72%);color:#fff;font-weight:600;box-shadow:inset 0 0 0 1px rgba(45,212,191,.14)}
+.nav button.active .ico{color:#2dd4bf}
+.nav button.active::before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:99px;background:linear-gradient(180deg,#2dd4bf,#0d9488);box-shadow:0 0 8px rgba(45,212,191,.55)}
+.side-bottom{margin-top:auto;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 13px;font-size:10.5px;line-height:1.65;color:#8ba2b8}
+.side-bottom b{display:block;color:#c9d8e4;font-weight:600;letter-spacing:.2px}
+/* ============ Topbar ============ */
+.topbar{position:sticky;top:0;z-index:30;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 30px;background:rgba(255,255,255,.78);backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);border-bottom:1px solid rgba(219,227,236,.9)}
+.crumb{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted)}
+.crumb .sep{color:#b9c6d4}
+.crumb b{color:var(--navy);font-weight:600}
+.top-actions{display:flex;align-items:center;gap:12px}
+.avatar-ring{height:38px;width:38px;padding:2px;border-radius:50%;background:conic-gradient(from 200deg,#2dd4bf,#0d9488 40%,#17334f 78%,#2dd4bf)}
+.avatar{height:100%;width:100%;border-radius:50%;display:grid;place-items:center;background:#eefaf8;color:#0b7c72;font-size:10.5px;font-weight:800;letter-spacing:.6px;box-shadow:inset 0 0 0 1.5px #fff}
+/* ============ Content / page head ============ */
+.content{max-width:1400px;width:100%;margin:0 auto;padding:26px 32px 60px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#0a8577;font-size:10.5px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#2dd4bf,#0d9488);box-shadow:0 0 0 3px rgba(20,184,166,.16)}
+.page-head h1{margin:9px 0 6px;font-size:29px;font-weight:800;letter-spacing:-.03em;color:var(--navy);line-height:1.15}
+.page-head p{margin:0;color:var(--muted);font-size:13.5px;max-width:60ch}
+/* ============ Buttons ============ */
+.btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border:1px solid transparent;border-radius:10px;font-weight:600;font-size:13px;white-space:nowrap;transition:transform .16s,box-shadow .16s,background .16s,border-color .16s,color .16s}
+.btn svg{width:15px;height:15px;flex:none}
+.btn-sm{height:32px;padding:0 12px;font-size:12px;border-radius:9px}
+.btn-sm svg{width:13px;height:13px}
+.btn-primary{background:linear-gradient(135deg,#17bca9 0%,#0d9488 100%);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 2px rgba(13,148,136,.4),0 8px 20px -6px rgba(13,148,136,.45)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 2px 4px rgba(13,148,136,.4),0 12px 26px -6px rgba(13,148,136,.55)}
+.btn-primary:active{transform:translateY(0)}
+.btn-light{background:#fff;color:#2b3f55;border-color:var(--line-2);box-shadow:var(--shadow-sm)}
+.btn-light:hover{background:#f7fafd;border-color:#c8d5e3;color:var(--navy)}
+/* ============ Stat cards ============ */
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.stat{--h:172;position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px 17px;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s,border-color .18s}
+.stat:hover{transform:translateY(-2px);border-color:#dbe6ee;box-shadow:0 2px 4px rgba(16,32,47,.05),0 18px 34px -12px rgba(16,32,47,.18)}
+.stat:nth-child(1){--h:172}
+.stat:nth-child(2){--h:213}
+.stat:nth-child(3){--h:35}
+.stat:nth-child(4){--h:152}
+.stat::after{content:"";position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(closest-side,hsl(var(--h) 82% 55% / .11),transparent 72%);pointer-events:none}
+.stat-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;font-weight:600}
+.stat-icon{height:36px;width:36px;border-radius:11px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,hsl(var(--h) 84% 55%),hsl(var(--h) 74% 42%));box-shadow:0 5px 12px -3px hsl(var(--h) 70% 42% / .5)}
+.stat-icon svg{width:17px;height:17px}
+.stat strong{display:block;margin-top:14px;font-family:var(--font-display);font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--navy);font-variant-numeric:tabular-nums}
+.stat small{display:block;margin-top:5px;color:var(--muted);font-size:11.5px}
+/* ============ Panels ============ */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 22px;border-bottom:1px solid var(--line);background:#fff}
+.panel-head h2{margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.015em;color:var(--navy)}
+.panel-head p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.panel-body{padding:20px 22px}
+/* ============ Quick access cards ============ */
+.quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.quick{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card);text-align:left;transition:transform .16s,border-color .16s,box-shadow .16s}
+.quick:hover{transform:translateY(-2px);border-color:#a7dcd5;box-shadow:0 12px 26px -10px rgba(13,148,136,.25)}
+.quick b{margin-top:10px;font-family:var(--font-display);font-size:13.5px;font-weight:700;letter-spacing:-.01em;color:var(--navy)}
+.quick .qcount{font-size:11.5px;color:var(--muted)}
+.qicon{--h:172;height:38px;width:38px;border-radius:11px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,hsl(var(--h) 84% 56%),hsl(var(--h) 72% 44%));box-shadow:0 5px 12px -3px hsl(var(--h) 70% 42% / .45)}
+.qicon svg{width:19px;height:19px}
+.quick:nth-child(1) .qicon{--h:213}
+.quick:nth-child(2) .qicon{--h:35}
+.quick:nth-child(3) .qicon{--h:258}
+.quick:nth-child(4) .qicon{--h:152}
+.qarrow{position:absolute;top:16px;right:15px;color:#c3cfdb;transition:transform .16s,color .16s}
+.qarrow svg{width:15px;height:15px}
+.quick:hover .qarrow{transform:translateX(3px);color:var(--teal)}
+/* ============ Lower grid + categories ============ */
+.lower-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:18px;margin-top:18px}
+.category-list{display:grid;gap:15px}
+.cat-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:11px;row-gap:8px}
+.cat-ico{height:26px;width:26px;border-radius:8px;display:grid;place-items:center;background:#edf3f9;color:#55728d}
+.cat-ico svg{width:13px;height:13px}
+.cat-name{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.cat-count{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cat-row:hover .cat-count::after{content:" · " attr(data-pct) "%";color:#0a8577;font-weight:700}
+.bar{grid-column:1/-1;height:7px;border-radius:99px;background:#edf1f6;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#0d9488,#2dd4bf);box-shadow:0 0 8px rgba(20,184,166,.3);transform-origin:0 50%;transition:width .5s cubic-bezier(.22,1,.36,1);animation:grow .9s cubic-bezier(.22,1,.36,1) backwards}
+/* ============ Tables ============ */
+.table-wrap{overflow:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:850px}
+#tableHost .table-wrap{max-height:min(62vh,600px)}
+th{position:sticky;top:0;z-index:3;text-align:left;background:#f6f9fc;color:#6b7c90;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;padding:11px 18px;white-space:nowrap;box-shadow:inset 0 -1px 0 var(--line)}
+#tableHost th:last-child{text-align:right}
+td{padding:13px 18px;border-bottom:1px solid #eef2f7;font-size:12.5px;color:var(--ink-2);vertical-align:middle;font-variant-numeric:tabular-nums}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:var(--hover)}
+tbody tr:last-child td{border-bottom:0}
+td:nth-child(5),td:nth-child(6),td:nth-child(7){color:var(--muted)}
+.sup-cell{display:flex;align-items:center;gap:11px}
+.supplier-name{font-weight:600;color:var(--navy);font-size:13px;letter-spacing:-.005em}
+.sub{display:block;color:var(--muted);font-size:10.5px;margin-top:1px;white-space:nowrap}
+table[style="min-width:0"] td:first-child{min-width:180px}
+table[style="min-width:0"] td:nth-child(2){white-space:nowrap}
+.avatar-dot{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:700;letter-spacing:.4px;box-shadow:inset 0 0 0 1px rgba(16,32,47,.07)}
+.tin{font-family:var(--mono);font-size:11px;color:var(--ink-2);background:#f5f8fb;border:1px solid var(--line);border-radius:7px;padding:3.5px 8px;white-space:nowrap}
+/* ============ Pills ============ */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid transparent;background:#f0f5f9;color:#51687e;font-size:10.5px;font-weight:700;letter-spacing:.1px;margin:2px 4px 2px 0;white-space:nowrap}
+.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.65;flex:none}
+.pill.type-factory{background:#eaf1fc;color:#31649f;border-color:#d7e5f8}
+.pill.type-importer{background:#fdf3e3;color:#a06415;border-color:#f6e3c4}
+.pill.type-agent{background:#f3eefd;color:#7451b3;border-color:#e4d9f8}
+.pill.type-wholesaler{background:#e7f7ee;color:#1f7d4f;border-color:#d2ecdd}
+/* ============ Row actions ============ */
+.actions{display:flex;gap:5px;justify-content:flex-end}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:29px;height:29px;border-radius:8px;color:#7a8ba0;transition:background .13s,color .13s,opacity .13s}
+.icon-btn svg{width:15px;height:15px}
+tbody tr .icon-btn{opacity:.35}
+tbody tr:hover .icon-btn{opacity:1}
+.icon-btn:hover{background:#eef2f7;color:var(--ink-2)}
+tbody tr .icon-btn:hover{background:#e7f5f3;color:var(--teal)}
+.icon-btn.danger:hover{background:#fdeeee;color:var(--red)}
+/* ============ Toolbar ============ */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fbfcfe,#f9fbfd)}
+.search{position:relative;flex:1;min-width:230px}
+.search>svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#93a4b6;pointer-events:none}
+.search input{width:100%;height:38px;padding:0 13px 0 37px;border:1px solid var(--line-2);border-radius:10px;background:#fff;outline:none;font-size:13px;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.search input::placeholder{color:#98a7b8}
+.search input:focus{border-color:#54c1b6;box-shadow:var(--ring)}
+.field{height:38px;padding:0 32px 0 13px;border:1px solid var(--line-2);border-radius:10px;appearance:none;-webkit-appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b8ca0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center/13px;color:var(--ink);font-size:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.field:focus{border-color:#54c1b6;box-shadow:var(--ring)}
+.count-badge{margin-left:auto;padding:6px 11px;border-radius:99px;background:#eef4f8;border:1px solid var(--line);color:#5b7186;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* ============ Empty states ============ */
+.empty{text-align:center;padding:46px 24px 50px;color:var(--muted);font-size:12.5px;line-height:1.6}
+.empty b{display:block;margin:6px 0 4px;font-family:var(--font-display);font-size:14.5px;font-weight:700;color:var(--navy)}
+.empty-art{width:132px;height:auto;margin-bottom:2px}
+/* ============ Modal ============ */
+.modal-backdrop{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(9,22,36,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.modal-backdrop.show{display:flex;animation:fade .2s ease}
+.modal{width:min(680px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:var(--shadow-lg);animation:pop .38s cubic-bezier(.21,1.25,.35,1)}
+.modal-head{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 22px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.mh-brand{display:flex;align-items:center;gap:12px}
+.mh-ico{height:34px;width:34px;flex:none;border-radius:10px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#14b8a6,#0d9488);box-shadow:0 4px 10px -2px rgba(13,148,136,.45)}
+.mh-ico svg{width:16px;height:16px}
+.modal-head h2{margin:0;font-family:var(--font-display);font-size:16.5px;font-weight:700;letter-spacing:-.015em;color:var(--navy)}
+.modal-content{padding:20px 22px}
+.notice{display:flex;gap:9px;align-items:flex-start;margin-bottom:16px;padding:11px 13px;border-radius:11px;background:#eefaf6;border:1px solid #d8f0e8;color:#17695e;font-size:12px;line-height:1.55}
+.notice svg{width:14px;height:14px;flex:none;margin-top:2px;color:#0d9488}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:grid;gap:6px;align-content:start}
+.form-group.full{grid-column:1/-1}
+.form-group>label{font-size:11px;font-weight:700;color:#54687e;letter-spacing:.15px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9.5px 12px;border:1px solid var(--line-2);border-radius:10px;background:#fff;outline:none;font-size:13px;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#9aaabb}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#54c1b6;box-shadow:var(--ring)}
+.form-group select{appearance:none;-webkit-appearance:none;padding-right:32px;cursor:pointer;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b8ca0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center/13px}
+.form-group textarea{min-height:74px;resize:vertical}
+.checks{display:flex;flex-wrap:wrap;gap:9px}
+.checks .check{position:relative;display:flex;align-items:center;gap:9px;flex:1 0 145px;padding:10px 12px;border:1px solid var(--line-2);border-radius:11px;background:#fff;font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;user-select:none;transition:border-color .15s,background .15s,box-shadow .15s,color .15s}
+.checks .check:hover{border-color:#bcd8d4;background:#f7fdfc}
+.checks .check input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.checks .cmark{flex:none;width:17px;height:17px;border-radius:6px;border:1.5px solid #c8d4e0;background:#fff;display:grid;place-items:center;transition:background .15s,border-color .15s,box-shadow .15s}
+.checks .cmark svg{width:10px;height:10px;color:#fff;stroke-width:2.5;opacity:0;transform:scale(.3);transition:opacity .16s,transform .16s cubic-bezier(.34,1.56,.64,1)}
+.checks .check input:checked + .cmark{background:linear-gradient(135deg,#14b8a6,#0d9488);border-color:transparent;box-shadow:0 2px 6px -1px rgba(13,148,136,.4)}
+.checks .check input:checked + .cmark svg{opacity:1;transform:scale(1)}
+.checks .check:has(input:checked){border-color:#8fd4cc;background:#f2fbf9;color:#0b6f66}
+.checks .cico{flex:none;display:grid;place-items:center;width:15px;height:15px;color:var(--faint);transition:color .15s}
+.checks .cico svg{width:14px;height:14px}
+.checks .check:has(input:checked) .cico{color:var(--teal)}
+.checks .check:focus-within{border-color:#54c1b6;box-shadow:var(--ring)}
+.modal-foot{position:sticky;bottom:0;z-index:5;display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+/* ============ Motion ============ */
+.rise{animation:rise .5s cubic-bezier(.22,1,.36,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.965)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* ============ Status flags ============ */
+.pill.status-noanswer{background:#fdecec;color:#b3363c;border-color:#f8d7d8}
+.avatar-dot.flagged{box-shadow:inset 0 0 0 1.5px rgba(220,61,67,.55),0 0 0 3px rgba(220,61,67,.12)}
+.icon-btn.flagged{color:var(--red)}
+.icon-btn.flagged:hover{background:#fdeeee;color:var(--red)}
+tbody tr .icon-btn.flagged{opacity:1}
+/* ============ Toasts ============ */
+#toasts{position:fixed;right:18px;bottom:18px;z-index:120;display:grid;gap:8px;justify-items:end}
+.toast{display:flex;align-items:center;gap:9px;max-width:340px;padding:10.5px 14px;border-radius:12px;background:#12293d;color:#ecf4fa;font-size:12.5px;font-weight:600;line-height:1.4;box-shadow:var(--shadow-lg);animation:toastIn .32s cubic-bezier(.21,1.25,.35,1)}
+.toast.out{animation:toastOut .25s ease forwards}
+.toast .tdot{width:8px;height:8px;border-radius:50%;flex:none}
+.toast.ok .tdot{background:#2dd4a7;box-shadow:0 0 0 3px rgba(45,212,167,.2)}
+.toast.warn .tdot{background:#f3c66d;box-shadow:0 0 0 3px rgba(243,198,109,.2)}
+.toast.err .tdot{background:#ff767c;box-shadow:0 0 0 3px rgba(255,118,124,.2)}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.95)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(10px) scale(.96)}}
+/* ============ Cloud sync ============ */
+.sync-chip{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:99px;border:1px solid var(--line-2);background:#fff;color:#51687e;font-size:11.5px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s;white-space:nowrap}
+.sync-chip:hover{border-color:#b9dcd7;background:#f6fcfb}
+.sync-chip .sdot{width:7.5px;height:7.5px;border-radius:50%;background:#a7b4c2;flex:none;transition:background .15s,box-shadow .15s}
+.sync-chip.cloud .sdot{background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.16)}
+.sync-chip.pending .sdot{background:#f0b429;box-shadow:0 0 0 3px rgba(240,180,41,.18)}
+.sync-chip.err .sdot{background:#e46a6f;box-shadow:0 0 0 3px rgba(228,106,111,.16)}
+.sql-box{position:relative;font-family:var(--mono);font-size:10.5px;line-height:1.6;background:#0e2236;color:#c7e2f0;border-radius:12px;padding:13px 44px 13px 15px;overflow:auto;max-height:200px;white-space:pre;margin:8px 0 2px}
+.sql-copy{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:8px;background:rgba(255,255,255,.1);color:#dcedf5;cursor:pointer;transition:background .15s}
+.sql-copy:hover{background:rgba(255,255,255,.22)}
+.sql-copy svg{width:13px;height:13px}
+.setup-steps{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;background:#fbfcfe}
+.setup-steps summary{cursor:pointer;padding:11px 14px;font-size:12px;font-weight:700;color:var(--ink-2);list-style:none;display:flex;align-items:center;gap:8px}
+.setup-steps summary::-webkit-details-marker{display:none}
+.setup-steps summary::after{content:"+";margin-left:auto;color:var(--faint);font-weight:800}
+.setup-steps[open] summary::after{content:"–"}
+.setup-steps ol{margin:0;padding:2px 16px 12px 30px;color:var(--ink-2);font-size:12px;line-height:1.65;display:grid;gap:6px}
+.setup-steps b{color:var(--navy)}
+.keywrap{position:relative}
+.keywrap input{padding-right:64px}
+.keytoggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:#eef4f8;border-radius:7px;padding:5.5px 9px;font-size:10px;font-weight:800;letter-spacing:.3px;color:#51687e;cursor:pointer}
+.keytoggle:hover{background:#e3edf5}
+.hintline{font-size:11px;color:var(--muted);line-height:1.6}
+.secnote{display:flex;gap:8px;margin-top:12px;padding:10px 12px;border-radius:10px;background:#fdf6e7;border:1px solid #f3e4bd;color:#8a6414;font-size:11px;line-height:1.55}
+.secnote svg{width:14px;height:14px;flex:none;margin-top:1px}
+.secnote b{font-weight:700}
+/* ============ Responsive ============ */
+@media(max-width:1050px){
+  .app{grid-template-columns:228px minmax(0,1fr)}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lower-grid{grid-template-columns:1fr}
+  .content{padding:24px 22px 50px}
+  .topbar{padding:0 22px}
+}
+@media(max-width:720px){
+  .app{display:block}
+  .sidebar{position:static;height:auto;overflow:visible;padding:14px 14px 12px;gap:12px}
+  .brand{padding:2px 4px}
+  .sidebar .nav-label,.side-bottom{display:none}
+  .nav{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{width:auto;white-space:nowrap;padding:7.5px 13px;border-radius:99px;background:rgba(255,255,255,.07);font-size:12.5px}
+  .nav .ico{width:15px;height:15px}
+  .nav .ico svg{width:15px;height:15px}
+  .nav button.active{background:linear-gradient(135deg,#14b8a6,#0d9488);box-shadow:0 4px 12px -2px rgba(13,148,136,.5)}
+  .nav button.active::before{display:none}
+  .topbar{height:56px;padding:0 14px}
+  .sync-chip{height:30px;padding:0 10px}
+  .sync-chip #syncLabel{display:none}
+  .crumb{font-size:12px}
+  .crumb .crumb-pre,.crumb .sep{display:none}
+  .content{padding:20px 14px 44px}
+  .page-head{display:block;margin-bottom:18px}
+  .page-head h1{font-size:23px}
+  .page-head .btn{margin-top:14px;width:100%;justify-content:center}
+  .cards{gap:10px}
+  .stat{padding:14px 15px}
+  .stat strong{font-size:24px}
+  .quick-grid{gap:9px}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:auto}
+  #tableHost .table-wrap{max-height:none}
+  .modal-backdrop{padding:12px}
+  .modal{max-height:94vh;border-radius:16px}
+  .modal-foot{flex-direction:column-reverse}
+  .modal-foot .btn{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">S</div><div><strong>Supplier List</strong><small>Supplier directory</small></div></div>
+  <div><div class="nav-label">Workspace</div><nav class="nav" id="mainNav">
+    <button class="active" data-page="overview"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/></svg></span>Overview</button>
+    <button data-page="all"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>All suppliers</button>
+  </nav></div>
+  <div><div class="nav-label">Supplier type</div><nav class="nav" id="typeNav">
+    <button data-page="type:Factory"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg></span>Factories</button>
+    <button data-page="type:Importer"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v10.5"/><path d="m7.5 10.5 4.5 4 4.5-4"/><path d="M5 20h14"/></svg></span>Importers</button>
+    <button data-page="type:Agent"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 10.2a2.3 2.3 0 0 0 0 3.6l7.4 7.4a2.3 2.3 0 0 0 3.6 0l7.4-7.4a2.3 2.3 0 0 0 0-3.6l-7.4-7.4a2.3 2.3 0 0 0-3.6 0Z"/></svg></span>Agents</button>
+    <button data-page="type:Wholesaler"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="6.5" rx="1.6"/><rect x="3.5" y="14" width="7.6" height="6.5" rx="1.6"/><rect x="12.9" y="14" width="7.6" height="6.5" rx="1.6"/></svg></span>Wholesalers</button>
+  </nav></div>
+  <div><div class="nav-label">Product categories</div><nav class="nav" id="productNav">
+    <button data-page="product:Food Stuff"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.2C10.8 6.6 8.7 6.2 6.9 7.2c-2.3 1.3-3.1 4.3-1.9 7.3 1.1 2.8 3 4.8 4.9 4.8.7 0 1.3-.3 2.1-.3s1.4.3 2.1.3c1.9 0 3.8-2 4.9-4.8 1.2-3 .4-6-1.9-7.3-1.8-1-3.9-.6-5.1 1Z"/><path d="M12 8.2c0-2.1 1.1-3.6 3.2-4.4"/></svg></span>Food Stuff</button>
+    <button data-page="product:Stationery"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></span>Stationery</button>
+    <button data-page="product:Cleaning Materials"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 15.4a2 2 0 0 0-1.3-1.3l-5.2-1.4a.5.5 0 0 1 0-1l5.2-1.4a2 2 0 0 0 1.3-1.3l1.4-5.2a.5.5 0 0 1 1 0l1.4 5.2a2 2 0 0 0 1.3 1.3l5.2 1.4a.5.5 0 0 1 0 1l-5.2 1.4a2 2 0 0 0-1.3 1.3l-1.4 5.2a.5.5 0 0 1-1 0Z"/><path d="M19.5 3v3"/><path d="M18 4.5h3"/><path d="M19.5 16.5v2.6"/><path d="M18.2 17.8h2.6"/></svg></span>Cleaning Materials</button>
+    <button data-page="product:Household Items"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10.6 9-7.6 9 7.6"/><path d="M5.3 9V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2V9"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg></span>Household Items</button>
+    <button data-page="product:Car Tyres"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v5.4"/><path d="M12 15.1v5.4"/><path d="M3.5 12h5.4"/><path d="M15.1 12h5.4"/></svg></span>Car Tyres</button>
+  </nav></div>
+  <div class="side-bottom" id="sideStatus"><b>Supplier List · Local prototype</b>Data stays in this browser</div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="crumb"><span class="crumb-pre">Workspace</span><span class="sep">/</span><b id="crumb">Overview</b></div><div class="top-actions"><button class="sync-chip" id="syncChip" title="PostgreSQL database status"><span class="sdot"></span><span id="syncLabel">Local only</span></button><button class="btn btn-light" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5v3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-3"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3.5"/></svg>Export CSV</button><div class="avatar-ring"><div class="avatar">AD</div></div></div></header>
+  <section class="content" id="content"></section>
+</main>
+</div>
+<div class="modal-backdrop" id="modal">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-head"><div class="mh-brand"><span class="mh-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="1.8"/><path d="M9 8h2.2M12.8 8H15M9 12h2.2M12.8 12H15M9 16h2.2M12.8 16H15"/><path d="M3.5 20.5h17"/></svg></span><h2 id="modalTitle">Add supplier</h2></div><button class="icon-btn" id="closeModal" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
+  <form id="supplierForm">
+   <div class="modal-content">
+    <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.2v4.3"/><path d="M12 8.2h.01"/></svg><span>Register a supplier once. Select every product category they supply so they appear in all relevant sections.</span></div>
+    <div class="form-grid">
+     <div class="form-group"><label>Supplier name *</label><input name="name" required placeholder="e.g. ABC Trading PLC"></div>
+     <div class="form-group"><label>TIN</label><input name="tin" placeholder="Tax identification number"></div>
+     <div class="form-group"><label>Supplier type *</label><select name="type" required><option value="">Select supplier type</option><option>Factory</option><option>Importer</option><option>Agent</option><option>Wholesaler</option></select></div>
+     <div class="form-group"><label>Contact person</label><input name="contact" placeholder="Full name"></div>
+     <div class="form-group"><label>Phone number(s)</label><input name="phone" placeholder="+251 ..."></div>
+     <div class="form-group"><label>Address</label><input name="address" placeholder="City, area, street"></div>
+     <div class="form-group"><label>Status</label><select name="status"><option value="active">Active — reachable</option><option value="no_answer">No answer — phone not working</option></select></div>
+     <div class="form-group" id="flagNoteGroup" style="display:none"><label>What happened? (optional)</label><input name="flag_note" placeholder="e.g. Both numbers unreachable since 12 Mar"></div>
+     <div class="form-group full"><label>Product categories supplied *</label><div class="checks" id="productChecks"></div></div>
+     <div class="form-group full"><label>Notes</label><textarea name="notes" placeholder="Optional details about this supplier"></textarea></div>
+    </div>
+   </div>
+   <div class="modal-foot"><button type="button" class="btn btn-light" id="cancelModal">Cancel</button><button class="btn btn-primary" type="submit">Save supplier</button></div>
+  </form>
+ </div>
+</div>
+<div class="modal-backdrop" id="cloudModal">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cloudTitle" style="width:min(580px,100%)">
+  <div class="modal-head"><div class="mh-brand"><span class="mh-ico" style="background:linear-gradient(135deg,#3b82f6,#1e5fd6)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8.5" ry="3"/><path d="M3.5 5.5v13c0 1.7 3.8 3 8.5 3s8.5-1.3 8.5-3v-13"/><path d="M3.5 12c0 1.7 3.8 3 8.5 3s8.5-1.3 8.5-3"/></svg></span><h2 id="cloudTitle">PostgreSQL database</h2></div><button class="icon-btn" id="closeCloud" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
+  <div class="modal-content">
+   <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.2v4.3"/><path d="M12 8.2h.01"/></svg><span>Every supplier is stored in your PostgreSQL database and this page reads and writes it live. The connection string lives in the server's <b>.env</b> file (<code>DATABASE_URL</code>) — nothing to configure here.</span></div>
+   <div class="hintline" id="cloudStatusLine" style="margin-top:12px"></div>
+   <div class="secnote" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5c0 4.6 3.2 8.6 7.5 10 4.3-1.4 7.5-5.4 7.5-10V6Z"/></svg><span>If the connection fails, click <b>Test connection</b> for the exact error. The <b>suppliers</b> table is created automatically when the server starts with a valid <code>DATABASE_URL</code>.</span></div>
+  </div>
+  <div class="modal-foot"><button type="button" class="btn btn-light" id="syncNowBtn" style="margin-right:auto">Sync now</button><button type="button" class="btn btn-light" id="cancelCloud">Close</button><button type="button" class="btn btn-primary" id="saveCloud">Test connection</button></div>
+ </div>
+</div>
+<div id="toasts" aria-live="polite"></div>
+<script>
+const TYPES=["Factory","Importer","Agent","Wholesaler"];
+const PRODUCTS=["Food Stuff","Stationery","Cleaning Materials","Household Items","Car Tyres"];
+const svg=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const icons={
+  "Factory":svg('<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/>'),
+  "Importer":svg('<path d="M12 4v10.5"/><path d="m7.5 10.5 4.5 4 4.5-4"/><path d="M5 20h14"/>'),
+  "Agent":svg('<path d="M2.8 10.2a2.3 2.3 0 0 0 0 3.6l7.4 7.4a2.3 2.3 0 0 0 3.6 0l7.4-7.4a2.3 2.3 0 0 0 0-3.6l-7.4-7.4a2.3 2.3 0 0 0-3.6 0Z"/>'),
+  "Wholesaler":svg('<rect x="3.5" y="3.5" width="17" height="6.5" rx="1.6"/><rect x="3.5" y="14" width="7.6" height="6.5" rx="1.6"/><rect x="12.9" y="14" width="7.6" height="6.5" rx="1.6"/>'),
+  "Food Stuff":svg('<path d="M12 8.2C10.8 6.6 8.7 6.2 6.9 7.2c-2.3 1.3-3.1 4.3-1.9 7.3 1.1 2.8 3 4.8 4.9 4.8.7 0 1.3-.3 2.1-.3s1.4.3 2.1.3c1.9 0 3.8-2 4.9-4.8 1.2-3 .4-6-1.9-7.3-1.8-1-3.9-.6-5.1 1Z"/><path d="M12 8.2c0-2.1 1.1-3.6 3.2-4.4"/>'),
+  "Stationery":svg('<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>'),
+  "Cleaning Materials":svg('<path d="M9.9 15.4a2 2 0 0 0-1.3-1.3l-5.2-1.4a.5.5 0 0 1 0-1l5.2-1.4a2 2 0 0 0 1.3-1.3l1.4-5.2a.5.5 0 0 1 1 0l1.4 5.2a2 2 0 0 0 1.3 1.3l5.2 1.4a.5.5 0 0 1 0 1l-5.2 1.4a2 2 0 0 0-1.3 1.3l-1.4 5.2a.5.5 0 0 1-1 0Z"/><path d="M19.5 3v3"/><path d="M18 4.5h3"/><path d="M19.5 16.5v2.6"/><path d="M18.2 17.8h2.6"/>'),
+  "Household Items":svg('<path d="m3 10.6 9-7.6 9 7.6"/><path d="M5.3 9V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2V9"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/>'),
+  "Car Tyres":svg('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v5.4"/><path d="M12 15.1v5.4"/><path d="M3.5 12h5.4"/><path d="M15.1 12h5.4"/>')
+};
+const ui={
+  list:svg('<path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>'),
+  plus:svg('<path d="M12 5v14"/><path d="M5 12h14"/>'),
+  search:svg('<circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/>'),
+  check:svg('<path d="m4.5 12.7 5 5L19.5 6.8"/>'),
+  pencil:svg('<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>'),
+  trash:svg('<path d="M3.5 6.5h17"/><path d="M8.5 6.5V5a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 5v1.5"/><path d="m5.5 6.5.85 12.6a2 2 0 0 0 2 1.9h7.3a2 2 0 0 0 2-1.9l.85-12.6"/><path d="M10 10.5v6"/><path d="M14 10.5v6"/>'),
+  arrow:svg('<path d="M4.5 12h15"/><path d="m13.5 6 6 6-6 6"/>'),
+  flag:svg('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>'),
+  cloud:svg('<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>')
+};
+const EMPTY_ART=`<svg class="empty-art" viewBox="0 0 148 112" fill="none" aria-hidden="true"><rect x="40" y="10" width="68" height="86" rx="10" fill="#f0f5fb" stroke="#dde7f3" stroke-width="2"/><path d="M54 32h40M54 44h40M54 56h26" stroke="#c9d8ea" stroke-width="5" stroke-linecap="round"/><circle cx="106" cy="80" r="16" fill="#14b8a6" opacity=".95"/><path d="m99.5 80.5 4.5 4.5 8.5-9.5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="22" r="4" fill="#f3c66d"/><circle cx="120" cy="28" r="3" fill="#a9d3f7"/><circle cx="24" cy="60" r="3" fill="#bfeee6"/></svg>`;
+let suppliers=JSON.parse(localStorage.getItem("supplierhub_data")||"[]");
+let page="overview", editingId=null;
+const $=s=>document.querySelector(s);
+const save=()=>localStorage.setItem("supplierhub_data",JSON.stringify(suppliers));
+/* ============ PostgreSQL sync (server REST API) ============ */
+const PENDING_KEY="supplierhub_pending";
+let pending=(()=>{try{const p=JSON.parse(localStorage.getItem(PENDING_KEY)||"null");return p&&Array.isArray(p.upserts)&&Array.isArray(p.deletes)?p:{upserts:[],deletes:[]}}catch(e){return{upserts:[],deletes:[]}}})();
+let cloudState="local"; // local | ok | pending | err
+const savePending=()=>localStorage.setItem(PENDING_KEY,JSON.stringify(pending));
+const normalize=s=>({id:String(s.id||"SUP-"+String(Date.now()).slice(-7)),name:String(s.name||""),tin:String(s.tin||""),type:String(s.type||"Factory"),contact:String(s.contact||""),phone:String(s.phone||""),address:String(s.address||""),products:Array.isArray(s.products)?s.products.map(String):[],notes:String(s.notes||""),status:s.status==="no_answer"?"no_answer":"active",flag_note:String(s.flag_note||""),flag_date:+s.flag_date||0,created:+s.created||Date.now(),updated_at:+s.updated_at||+s.created||Date.now()});
+const rec2row=s=>({id:s.id,name:s.name,tin:s.tin||"",type:s.type,contact:s.contact||"",phone:s.phone||"",address:s.address||"",products:s.products,notes:s.notes||"",status:s.status||"active",flag_note:s.flag_note||"",flag_date:s.flag_date||0,created:s.created,updated_at:s.updated_at||s.created||Date.now()});
+function api(method,body,qs){
+ const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),9000);
+ return fetch("/api/suppliers"+(qs||""),{method,signal:ctrl.signal,headers:{"Content-Type":"application/json"},body:body==null?undefined:JSON.stringify(body)}).finally(()=>clearTimeout(timer));
+}
+async function apiErr(r){
+ let msg="Server request failed ("+r.status+")";
+ try{const j=await r.json();if(j&&j.error)msg=j.error;}catch(e){}
+ throw new Error(msg);
+}
+function toast(msg,kind){
+ const t=document.createElement("div");t.className="toast "+(kind||"ok");t.innerHTML='<span class="tdot"></span><span>'+esc(msg)+"</span>";
+ $("#toasts").appendChild(t);setTimeout(()=>{t.classList.add("out");setTimeout(()=>t.remove(),260)},3600);
+}
+const friendlyErr=(e,fallback)=>/failed to fetch|networkerror|load failed|aborted|timeout/i.test(e&&e.message||"")?fallback:(e&&e.message||fallback);
+function updateSyncChip(){
+ const chip=$("#syncChip"),label=$("#syncLabel");
+ const np=pending.upserts.length+pending.deletes.length;
+ chip.classList.remove("cloud","pending","err");
+ if(cloudState==="ok"&&np){chip.classList.add("pending");label.textContent=np+" pending";}
+ else if(cloudState==="ok"){chip.classList.add("cloud");label.textContent="PostgreSQL synced";}
+ else if(cloudState==="pending"){chip.classList.add("pending");label.textContent=(np||"Changes")+" pending";}
+ else{chip.classList.add("err");label.textContent="Database unreachable";}
+ $("#sideStatus").innerHTML="<b>Supplier List · "+(cloudState==="err"?"Offline":"PostgreSQL connected")+"</b>"+(cloudState==="err"?"Changes are cached in this browser and sync automatically":"Changes save to your PostgreSQL database");
+}
+function queueIds(upIds,delIds){
+ pending.upserts=[...new Set([...pending.upserts,...upIds.filter(id=>suppliers.some(s=>s.id===id))])];
+ pending.deletes=[...new Set([...pending.deletes,...delIds])];
+ savePending();
+}
+async function syncIds(upIds,delIds){
+ upIds=upIds.filter(id=>suppliers.some(s=>s.id===id));
+ if(upIds.length){const r=await api("POST",upIds.map(id=>rec2row(suppliers.find(s=>s.id===id))));if(!r.ok)await apiErr(r);}
+ for(const id of delIds){const r=await api("DELETE",null,"/"+encodeURIComponent(id));if(!r.ok)await apiErr(r);}
+ pending.upserts=pending.upserts.filter(id=>!upIds.includes(id)&&!delIds.includes(id));
+ pending.deletes=pending.deletes.filter(id=>!delIds.includes(id));
+ savePending();
+}
+function mergeRemote(remote){
+ const remoteIds=new Set(remote.map(x=>String(x.id)));
+ const prev=new Set(JSON.parse(localStorage.getItem("supplierhub_cloudids")||"[]"));
+ const byId=new Map(suppliers.map(s=>[s.id,s]));
+ remote.forEach(r=>{const n=normalize(r);const l=byId.get(n.id);
+  if(!l)byId.set(n.id,n);
+  else if(!pending.upserts.includes(n.id)&&n.updated_at>l.updated_at)byId.set(n.id,n);
+ });
+ suppliers=[...byId.values()].filter(s=>!(!remoteIds.has(s.id)&&prev.has(s.id)&&!pending.upserts.includes(s.id)));
+ pending.deletes.forEach(id=>{suppliers=suppliers.filter(s=>s.id!==id)});
+ save();
+}
+async function flushPending(){const up=[...pending.upserts],del=[...pending.deletes];if(up.length||del.length)await syncIds(up,del);}
+async function syncNow(verbose){
+ try{
+  const r=await api("GET",null,"");if(!r.ok)await apiErr(r);
+  const remote=await r.json();
+  const remoteIds=new Set(remote.map(x=>String(x.id)));
+  const prev=new Set(JSON.parse(localStorage.getItem("supplierhub_cloudids")||"[]"));
+  const orphan=suppliers.filter(s=>!remoteIds.has(s.id)&&!prev.has(s.id)&&!pending.upserts.includes(s.id)).map(s=>s.id);
+  if(orphan.length){pending.upserts=[...new Set([...pending.upserts,...orphan])];savePending();}
+  mergeRemote(remote);
+  await flushPending();
+  const np=pending.upserts.length+pending.deletes.length;
+  cloudState=np?"pending":"ok";
+  localStorage.setItem("supplierhub_lastsync",String(Date.now()));
+  localStorage.setItem("supplierhub_cloudids",JSON.stringify([...new Set([...remoteIds,...suppliers.filter(s=>!pending.deletes.includes(s.id)).map(s=>s.id)])]));
+  render();updateSyncChip();
+  if(verbose)toast(np?"Database synced — "+np+" change"+(np===1?"":"s")+" still queued":"Database synced · "+suppliers.length+" supplier"+(suppliers.length===1?"":"s"),np?"warn":"ok");
+ }catch(e){
+  cloudState=pending.upserts.length+pending.deletes.length?"pending":"err";
+  render();updateSyncChip();
+  if(verbose)toast(friendlyErr(e,"PostgreSQL unreachable — using the copy on this device"),"err");
+ }
+}
+function afterMutation(upIds,delIds){
+ save();render();
+ (async()=>{try{await syncIds(upIds,delIds);const np=pending.upserts.length+pending.deletes.length;cloudState=np?"pending":"ok";toast("Saved to PostgreSQL"+(np?" — "+np+" queued":""),"ok");}
+  catch(e){queueIds(upIds,delIds);cloudState="pending";toast(friendlyErr(e,"Saved on this device — will sync to PostgreSQL when it is reachable"),"warn");}
+  render();updateSyncChip();})();
+}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const countType=t=>suppliers.filter(s=>s.type===t).length;
+const countProduct=p=>suppliers.filter(s=>s.products.includes(p)).length;
+function setPage(p){page=p;document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));render();}
+function pageTitle(){if(page==="overview")return"Overview";if(page==="all")return"All suppliers";if(page.startsWith("type:"))return page.split(":")[1]+" directory";return page.split(":")[1]+" suppliers";}
+function avatar(s){const name=String(s&&s.name||"").trim();let h=0;for(let i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;const hue=h%360;const ini=name.replace(/[^\p{L}\p{N} ]/gu,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"S";return `<span class="avatar-dot${s.status==="no_answer"?" flagged":""}" style="background:hsl(${hue} 70% 91%);color:hsl(${hue} 55% 30%)" aria-hidden="true">${esc(ini)}</span>`;}
+function statCard(label,value,icon,sub){return `<div class="stat"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><strong>${value}</strong><small>${sub}</small></div>`;}
+function animateIn(){[...$("#content").children].forEach((el,i)=>{el.classList.add("rise");el.style.animationDelay=Math.min(i*70,280)+"ms";});}
+function render(){
+ $("#crumb").textContent=pageTitle();
+ if(page==="overview"){renderOverview();return;}
+ renderDirectory();
+}
+function renderOverview(){
+ const flaggedCount=suppliers.filter(s=>s.status==="no_answer").length;
+ const recent=[...suppliers].sort((a,b)=>b.created-a.created).slice(0,5);
+ $("#content").innerHTML=`
+ <div class="page-head"><div><div class="eyebrow">Your supplier workspace</div><h1>Good day. Here's your directory.</h1><p>Keep supplier information organized and find the right business faster.</p></div><button class="btn btn-primary" id="addBtn">${ui.plus} Add supplier</button></div>
+ <div class="cards">${statCard("Total suppliers",suppliers.length,ui.list,flaggedCount?flaggedCount+" flagged — need follow-up":"Registered businesses")}${statCard("Factories",countType("Factory"),icons.Factory,"Manufacturers")}${statCard("Importers",countType("Importer"),icons.Importer,"Import businesses")}${statCard("Wholesalers",countType("Wholesaler"),icons.Wholesaler,"Wholesale businesses")}</div>
+ <div class="panel"><div class="panel-head"><div><h2>Browse supplier types</h2><p>Open a dedicated section to see only that type of supplier.</p></div></div><div class="panel-body"><div class="quick-grid">${TYPES.map(t=>`<button class="quick" data-go="type:${t}"><span class="qicon">${icons[t]}</span><b>${t==="Factory"?"Factories":t+"s"}</b><span class="qcount">${countType(t)} registered</span><span class="qarrow">${ui.arrow}</span></button>`).join("")}</div></div></div>
+ <div class="lower-grid"><div class="panel"><div class="panel-head"><div><h2>Browse product categories</h2><p>Find suppliers by the products they provide.</p></div></div><div class="panel-body"><div class="category-list">${PRODUCTS.map(p=>{let n=countProduct(p),pct=suppliers.length?Math.round(n/suppliers.length*100):0;return `<div class="cat-row"><span class="cat-ico">${icons[p]}</span><span class="cat-name">${p}</span><span class="cat-count" data-pct="${pct}">${n} supplier${n===1?"":"s"}</span><div class="bar"><i style="width:${pct}%"></i></div></div>`}).join("")}</div></div></div>
+ <div class="panel"><div class="panel-head"><div><h2>Recently added</h2><p>Your latest supplier records.</p></div><button class="btn btn-light btn-sm" data-go="all">View all ${ui.arrow}</button></div><div class="panel-body" style="padding:0">${recent.length?`<div class="table-wrap"><table style="min-width:0"><thead><tr><th>Supplier</th><th>Type</th><th>Products</th></tr></thead><tbody>${recent.map(s=>`<tr><td><div class="sup-cell">${avatar(s)}<div><span class="supplier-name">${esc(s.name)}</span><span class="sub">${esc(s.id)}</span></div></div></td><td>${typePill(s.type)}</td><td>${s.products.map(productPill).join("")}</td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${EMPTY_ART}<b>No suppliers yet</b>Add your first supplier to start building the directory.</div>`}</div></div></div>`;
+ animateIn();
+ $("#addBtn").onclick=()=>openModal();document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
+}
+function typePill(t){return `<span class="pill type-${t.toLowerCase()}">${esc(t)}</span>`}
+function statusPill(s){if(!s||s.status!=="no_answer")return"";const d=s.flag_date?new Date(s.flag_date).toLocaleDateString(undefined,{day:"numeric",month:"short"}):"";const tip=(s.flag_note?esc(s.flag_note):"No answer")+(d?" · "+d:"");return `<span class="pill status-noanswer" title="${tip}">No answer${d?" · "+d:""}</span>`}
+function productPill(p){return `<span class="pill">${esc(p)}</span>`}
+function renderDirectory(){
+ let title=pageTitle(),desc=page==="all"?"Search the complete supplier database and filter it by supplier type or product.":page.startsWith("type:")?`A dedicated list of all suppliers classified as ${page.split(":")[1]}.`:`Suppliers that provide ${page.split(":")[1]}.`;
+ let list=suppliers.filter(s=>page==="all"||(page.startsWith("type:")?s.type===page.split(":")[1]:s.products.includes(page.split(":")[1])));
+ $("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">Supplier directory</div><h1>${esc(title)}</h1><p>${esc(desc)}</p></div><button class="btn btn-primary" id="addBtn">${ui.plus} Add supplier</button></div>
+ <div class="panel"><div class="toolbar"><div class="search">${ui.search}<input id="searchInput" placeholder="Search name, TIN, contact, phone or address..."></div>${page==="all"?`<select class="field" id="typeFilter"><option value="">All supplier types</option>${TYPES.map(t=>`<option>${t}</option>`).join("")}</select>`:""}<select class="field" id="productFilter"><option value="">All product categories</option>${PRODUCTS.map(p=>`<option>${p}</option>`).join("")}</select><select class="field" id="statusFilter"><option value="">All statuses</option><option value="active">Active</option><option value="no_answer">No answer</option></select><span class="count-badge" id="resultCount">${list.length} records</span></div>
+ <div id="tableHost"></div></div>`;
+ animateIn();
+ $("#addBtn").onclick=()=>openModal();
+ const update=()=>{let q=$("#searchInput").value.toLowerCase(),tf=$("#typeFilter")?.value||"",pf=$("#productFilter").value,sf=$("#statusFilter").value;let rows=list.filter(s=>(!tf||s.type===tf)&&(!pf||s.products.includes(pf))&&(!sf||s.status===sf)&&[s.name,s.tin,s.contact,s.phone,s.address,s.id,s.flag_note,s.notes].join(" ").toLowerCase().includes(q));$("#resultCount").textContent=rows.length+" records";drawTable(rows);};
+ $("#searchInput").addEventListener("input",update);$("#productFilter").addEventListener("change",update);$("#typeFilter")?.addEventListener("change",update);$("#statusFilter").addEventListener("change",update);update();
+}
+function drawTable(rows){
+ $("#tableHost").innerHTML=rows.length?`<div class="table-wrap"><table><thead><tr><th>Supplier</th><th>TIN</th><th>Supplier type</th><th>Product categories</th><th>Contact person</th><th>Phone</th><th>Address</th><th>Actions</th></tr></thead><tbody>${rows.map(s=>`<tr><td><div class="sup-cell">${avatar(s)}<div><span class="supplier-name">${esc(s.name)}</span><span class="sub">${esc(s.id)}</span></div></div></td><td>${s.tin?`<span class="tin">${esc(s.tin)}</span>`:"—"}</td><td>${typePill(s.type)}${statusPill(s)}</td><td>${s.products.map(productPill).join("")}</td><td>${esc(s.contact||"—")}</td><td>${esc(s.phone||"—")}</td><td>${esc(s.address||"—")}</td><td><div class="actions"><button class="icon-btn ${s.status==="no_answer"?"flagged":""}" data-flag="${s.id}" title="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}" aria-label="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}">${ui.flag}</button><button class="icon-btn" data-edit="${s.id}" title="Edit" aria-label="Edit">${ui.pencil}</button><button class="icon-btn danger" data-delete="${s.id}" title="Delete" aria-label="Delete">${ui.trash}</button></div></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${EMPTY_ART}<b>No matching suppliers</b>Try another search or add a supplier to this section.</div>`;
+ document.querySelectorAll("[data-flag]").forEach(b=>b.onclick=()=>toggleFlag(b.dataset.flag));
+ document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openModal(b.dataset.edit));
+ document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>removeSupplier(b.dataset.delete));
+}
+function openModal(id=null){
+ editingId=id;const s=id?suppliers.find(x=>x.id===id):null;
+ $("#modalTitle").textContent=s?"Edit supplier":"Add supplier";
+ const form=$("#supplierForm");form.reset();
+ form.elements.name.value=s?.name||"";form.elements.tin.value=s?.tin||"";form.elements.type.value=s?.type||"";form.elements.contact.value=s?.contact||"";form.elements.phone.value=s?.phone||"";form.elements.address.value=s?.address||"";form.elements.notes.value=s?.notes||"";form.elements.status.value=s?.status||"active";form.elements.flag_note.value=s?.flag_note||"";syncFlagGroup();
+ $("#productChecks").innerHTML=PRODUCTS.map(p=>`<label class="check"><input type="checkbox" name="products" value="${esc(p)}" ${s?.products.includes(p)?"checked":""}><span class="cmark" aria-hidden="true">${ui.check}</span><span class="cico" aria-hidden="true">${icons[p]}</span><span class="ctext">${esc(p)}</span></label>`).join("");
+ $("#modal").classList.add("show");
+}
+function closeModal(){$("#modal").classList.remove("show");editingId=null;}
+function removeSupplier(id){const s=suppliers.find(x=>x.id===id);if(s&&confirm(`Delete ${s.name} permanently?\n\nTip: if the phone just stopped working, use the flag button instead — it keeps the supplier with a "No answer" mark instead of erasing it.`)){suppliers=suppliers.filter(x=>x.id!==id);toast(s.name+" deleted from the directory","warn");afterMutation([],[id]);}}
+function toggleFlag(id){const s=suppliers.find(x=>x.id===id);if(!s)return;s.status=s.status==="no_answer"?"active":"no_answer";s.updated_at=Date.now();if(s.status==="no_answer"){s.flag_date=Date.now();toast(s.name+" flagged as No answer","warn");}else{s.flag_date=0;toast(s.name+" marked active again","ok");}afterMutation([id],[]);}
+$("#supplierForm").addEventListener("submit",e=>{
+ e.preventDefault();const f=e.currentTarget,products=[...f.querySelectorAll('input[name="products"]:checked')].map(x=>x.value);
+ if(!products.length){alert("Please select at least one product category.");return;}
+ const old=editingId?suppliers.find(x=>x.id===editingId):null;
+ const status=f.elements.status.value==="no_answer"?"no_answer":"active";
+ const record={id:old?.id||"SUP-"+String(Date.now()).slice(-7),name:f.elements.name.value.trim(),tin:f.elements.tin.value.trim(),type:f.elements.type.value,contact:f.elements.contact.value.trim(),phone:f.elements.phone.value.trim(),address:f.elements.address.value.trim(),products,notes:f.elements.notes.value.trim(),status,flag_note:status==="no_answer"?f.elements.flag_note.value.trim():"",flag_date:status==="no_answer"?(old&&old.status==="no_answer"?old.flag_date||Date.now():Date.now()):0,created:old?.created||Date.now(),updated_at:Date.now()};
+ if(old)Object.assign(old,record);else suppliers.unshift(record);
+ closeModal();afterMutation([record.id],[]);
+});
+$("#closeModal").onclick=closeModal;$("#cancelModal").onclick=closeModal;$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+$("#exportBtn").onclick=()=>{
+ const rows=[["ID","Supplier Name","TIN","Supplier Category","Status","Product Categories","Contact Person","Phones","Address","Notes","Flag Note"],...suppliers.map(s=>[s.id,s.name,s.tin,s.type,s.status==="no_answer"?"No answer":"Active",s.products.join("; "),s.contact,s.phone,s.address,s.notes,s.status==="no_answer"?[s.flag_note,s.flag_date?new Date(s.flag_date).toLocaleDateString():""].filter(Boolean).join(" · "):""])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="supplier-directory.csv";a.click();URL.revokeObjectURL(a.href);
+};
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>setPage(b.dataset.page)));
+function syncFlagGroup(){$("#flagNoteGroup").style.display=$("#supplierForm").elements.status.value==="no_answer"?"":"none";}
+$("#supplierForm").elements.status.addEventListener("change",syncFlagGroup);
+/* ============ Database status dialog ============ */
+function openCloud(){
+ $("#cloudModal").classList.add("show");
+ refreshDbStatus();
+}
+async function refreshDbStatus(){
+ const line=$("#cloudStatusLine");
+ line.textContent="Checking database connection…";
+ try{
+  const r=await fetch("/api/health");
+  const j=await r.json();
+  if(j.ok){
+   const last=localStorage.getItem("supplierhub_lastsync");
+   const np=pending.upserts.length+pending.deletes.length;
+   line.innerHTML="<b>Connected.</b> PostgreSQL is reachable"+(last?" · last sync "+new Date(+last).toLocaleString():"")+" · "+suppliers.length+" supplier"+(suppliers.length===1?"":"s")+" on this page"+(np?" · "+np+" change"+(np===1?"":"s")+" waiting to sync":"");
+  }else{
+   line.innerHTML="<b style='color:#b91c1c'>Not connected.</b> "+esc(j.error||"The server could not reach PostgreSQL.")+" — set <code>DATABASE_URL</code> in the server's .env file.";
+  }
+ }catch(e){
+  line.innerHTML="<b style='color:#b91c1c'>Server unreachable.</b> "+esc(friendlyErr(e,"Could not reach the Node.js server — is it running?"));
+ }
+}
+$("#syncChip").onclick=openCloud;
+$("#closeCloud").onclick=()=>$("#cloudModal").classList.remove("show");
+$("#cancelCloud").onclick=()=>$("#cloudModal").classList.remove("show");
+$("#cloudModal").addEventListener("click",e=>{if(e.target.id==="cloudModal")$("#cloudModal").classList.remove("show");});
+$("#syncNowBtn").onclick=async()=>{const b=$("#syncNowBtn");b.disabled=true;b.textContent="Syncing…";await syncNow(true);b.disabled=false;b.textContent="Sync now";refreshDbStatus();};
+$("#saveCloud").onclick=async()=>{
+ const btn=$("#saveCloud");btn.disabled=true;btn.textContent="Testing…";
+ try{
+  const r=await api("POST",[]);if(!r.ok)await apiErr(r);
+  cloudState="ok";updateSyncChip();
+  toast("PostgreSQL connection is working","ok");
+  await syncNow(true);refreshDbStatus();
+ }catch(e){toast(e.message||"Could not reach the database","err");refreshDbStatus();}
+ btn.disabled=false;btn.textContent="Test connection";
+};
+(async function init(){
+ suppliers=suppliers.map(normalize);save();
+ updateSyncChip();render();
+ await syncNow(true);
+})();
+</script>
+</body>
+</html>
