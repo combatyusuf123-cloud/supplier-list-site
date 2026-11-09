@@ -18,11 +18,13 @@ app.use(express.static(path.join(__dirname, "public")));
 // Allow health checks / status text even when the DB is not configured yet.
 app.get("/api/health", async (req, res) => {
   if (!DATABASE_URL) return res.status(503).json({ ok: false, error: "DATABASE_URL is not set in .env" });
+  let parsed = {};
+  try { parsed = new URL(DATABASE_URL); } catch (e) { return res.status(503).json({ ok: false, error: "DATABASE_URL is not a valid connection string" }); }
   try {
     await pool.query("select 1");
-    res.json({ ok: true });
+    res.json({ ok: true, dbHost: parsed.hostname, dbUser: parsed.username, dbDatabase: parsed.pathname });
   } catch (e) {
-    res.status(503).json({ ok: false, error: e.message });
+    res.status(503).json({ ok: false, error: e.message, dbHost: parsed.hostname, dbUser: parsed.username, dbDatabase: parsed.pathname });
   }
 });
 
