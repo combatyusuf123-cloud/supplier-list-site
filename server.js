@@ -4,6 +4,9 @@ const express = require("express");
 const { Pool } = require("pg");
 
 require("dotenv").config();
+if (!process.env.DATABASE_URL) {
+  require("dotenv").config({ path: path.join(__dirname, "render.env") });
+}
 
 const PORT = process.env.PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL || "";
