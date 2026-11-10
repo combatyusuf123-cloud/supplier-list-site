@@ -433,75 +433,89 @@ button.mini:hover{transform:translateY(-2px);box-shadow:0 22px 38px -22px rgba(9
  .topbar{padding:0 18px}
  .brandbar .crumb{display:none}
 }
-/* ===== Bolder contrast pass ===== */
-body{font:500 14px/1.55 var(--font-body)}
-body{background:linear-gradient(160deg,#f3f6fc 0%,#e4eaf7 45%,#dce3f5 100%)}
-.panel{background:rgba(255,255,255,.94);box-shadow:0 22px 42px -26px rgba(72,92,140,.5)}
-.panel-head h2{font-size:16.5px;font-weight:800;color:#1d3251;letter-spacing:-.02em}
-.panel-head p{color:#5d7089;font-weight:600;font-size:12.5px}
-.sidebar{background:rgba(255,255,255,.88)}
-.nav button{color:#3d4e68;font-weight:700;font-size:13.5px}
-.brandbar .wordmark{font-size:22px;font-weight:800;color:#1d3251}
-.brandbar .crumb{color:#42536e;font-weight:700}
-.brandbar .crumb b{color:#1d3251;font-weight:800;font-size:14px}
-.hero-num{font-size:64px;color:#1d3251}
-.hero-top{color:#3e526e;font-weight:700}
-.hero-sub{color:#41536e;font-weight:700;font-size:12.5px}
-.hero-chip{background:#fff;font-weight:700;color:#2e405a;box-shadow:0 8px 16px -10px rgba(72,92,140,.5),inset 0 0 0 1px rgba(96,116,162,.08)}
-.hero-chip b{color:#c0343b}
-.quick-cell{background:rgba(238,242,250,.95);box-shadow:inset 0 0 0 1px rgba(255,255,255,1)}
-.quick-cell small{font-size:12px;font-weight:700;color:#3e526e}
-.quick-cell .qc-ico{color:#2e4a72}
-.mini{background:rgba(255,255,255,.94)}
-.mini label{color:#3e526e;font-weight:700;font-size:12px}
-.mini strong{font-size:32px;color:#1d3251}
-.mini small{color:#7c8ea6;font-weight:600;font-size:10.5px}
-.rrow .rname{font-size:13.5px;font-weight:700;color:#1d3251}
-.rrow .rtime{color:#7c8ea6;font-weight:600}
-.rpill{font-size:11px;padding:5px 13px;font-weight:800}
-.rpill.ok{background:#d3f2e2;color:#157a45}
-.rpill.warn{background:#fadddd;color:#b02a37}
-.rhalf{color:#42536e;font-weight:700;font-size:11px}
-.cat-name{font-weight:700;color:#2e405a}
-.cat-count{background:#e8eef9;color:#33507a;font-weight:700}
-.bar{height:8px;border-radius:99px}
-.bar i{background:linear-gradient(90deg,#33507a,#3f5f8d)}
-.cta{height:52px;font-size:14px;font-weight:700;letter-spacing:.1px}
-.dbcard{background:linear-gradient(140deg,#26395a 0%,#33507a 55%,#4a6794 100%);box-shadow:0 26px 45px -18px rgba(38,61,94,.65)}
-.dbcard .k{color:#b9cdec}
-.dbcard .big{font-size:34px}
-.dbrow{color:#dce9fb;font-weight:600}
-.dbrow b{color:#fff;font-weight:700}
-.sync-chip{color:#2e405a;font-weight:700}
-#exportBtn,#topSearch{color:#31435e}
-.iconc{color:#31435e}
-.addhint{color:#5d7089;font-weight:600}
-.addhint b{color:#2e405a}
-/* ===== Readability pass ===== */
-body{font:500 14.5px/1.55 var(--font-body);color:#1d2f45}
-.nav button{color:#2e405a;font-size:14px}
-.panel-head h2{font-size:17px}
-.panel-head p{font-size:13px;color:#4a5d78}
-.brandbar .crumb{font-size:13.5px;color:#33465f}
-.hero-top{font-size:13.5px;color:#33465f}
-.hero-sub{font-size:13px;color:#33465f}
-.hero-chip{font-size:12px}
-.quick-cell small{font-size:12.5px;color:#2e405a}
-.mini label{font-size:12.5px;color:#33465f}
-.mini small{font-size:11.5px;color:#4a5d78}
-.rrow .rname{font-size:14px}
-.rrow .rtime{font-size:12px;color:#55677f;font-weight:600}
-.rpill{font-size:11.5px}
-.rhalf{font-size:12px;color:#33465f}
-.cat-name{font-size:13.5px}
-.cat-count{font-size:12.5px}
-.cta{font-size:15px}
-.linklike{font-size:13px;color:#28466b;font-weight:700}
-.addhint{font-size:12px;color:#3d4f66}
-.dbrow{font-size:12.5px}
-.quick-cell .qc-ico{color:#22406b}
-.quick-cell{background:#fff;box-shadow:inset 0 0 0 1px #e3eaf6,0 8px 16px -10px rgba(72,92,140,.35)}
-</style>
+/* ===== Monochrome high-contrast theme ===== */
+body{background:linear-gradient(160deg,#ffffff 0%,#f4f5f7 55%,#eceded 100%)}
+body::before{background:
+ radial-gradient(1100px 700px at 90% -12%,rgba(255,255,255,.95),transparent 55%),
+ radial-gradient(900px 600px at 4% 0%,rgba(214,217,224,.35),transparent 55%)}
+.panel{background:#fff;border:1px solid #e9eaec;box-shadow:0 18px 38px -26px rgba(24,26,30,.28)}
+.panel-head h2{color:#101114;font-weight:800}
+.panel-head p{color:#4b4f57;font-weight:600;font-size:13px}
+.sidebar{background:rgba(255,255,255,.95);border:1px solid #ececee;box-shadow:0 22px 44px -24px rgba(24,26,30,.3)}
+.nav{background:#f5f6f8;box-shadow:inset 0 0 0 1px #eceded}
+.nav button{color:#1c1e22;font-weight:700;font-size:14px;background:transparent;border:0;transition:background .12s,color .12s}
+.nav button .ico{color:#3a3d43}
+.nav button:hover{background:#e9eaee;color:#000;transform:none}
+.nav button:hover .ico{color:#000}
+.nav button.active{background:#0c0c0f;color:#fff;box-shadow:none}
+.nav button.active .ico{color:#fff}
+.nav button.active::before{display:none}
+.logo{background:#0c0c0f;box-shadow:none}
+.railbtn{background:#fff;border:1px solid #e9eaec;box-shadow:0 8px 16px -10px rgba(24,26,30,.25);color:#1c1e22}
+.railbtn:hover{color:#000;background:#f5f6f8}
+.sync-chip{background:#fff;border:1px solid #e9eaec;box-shadow:0 8px 16px -12px rgba(24,26,30,.3);color:#111214;font-weight:700}
+.sync-chip .sdot{background:#c5c8cf}
+.sync-chip.cloud .sdot{background:#0c0c0f;box-shadow:0 0 0 3px rgba(12,12,15,.12)}
+.sync-chip.pending .sdot{background:#5c5f66;box-shadow:0 0 0 3px rgba(92,95,102,.14)}
+.sync-chip.err .sdot{background:#c0343b;box-shadow:0 0 0 3px rgba(192,52,59,.16)}
+.iconc{background:#fff;border:1px solid #e9eaec;box-shadow:0 8px 16px -12px rgba(24,26,30,.3);color:#17181c}
+.iconc:hover{color:#000;transform:none}
+#exportBtn{background:#fff;border:1px solid #e9eaec;box-shadow:0 8px 16px -12px rgba(24,26,30,.3);color:#17181c}
+#exportBtn:hover{background:#f5f6f8;color:#000;transform:none}
+.wordmark{color:#0c0c0f}
+.hero-num{color:#0c0c0f}
+.hero-top{color:#31343a;font-weight:700}
+.hero-sub{color:#45494f;font-weight:650;font-size:13px}
+.hero-chip{background:#f5f6f8;color:#17181c;font-weight:700;box-shadow:inset 0 0 0 1px #e9eaec}
+.hero-chip b{color:#0c0c0f}
+.quick-cell{background:#fff;box-shadow:inset 0 0 0 1px #e6e7ea,0 6px 14px -10px rgba(24,26,30,.25)}
+.quick-cell small{font-size:12.5px;font-weight:700;color:#17181c}
+.quick-cell .qc-ico{background:#0c0c0f;color:#fff;box-shadow:none}
+.mini{background:#fff;border:1px solid #e9eaec}
+.mini label{color:#31343a;font-weight:700;font-size:12.5px}
+.mini strong{font-size:32px;color:#0c0c0f}
+.mini small{color:#55595f;font-weight:600;font-size:11.5px}
+.rrow .rname{font-size:14px;font-weight:700;color:#0c0c0f}
+.rrow .rtime{color:#4a4e55;font-weight:600;font-size:12px}
+.rpill{font-weight:800;letter-spacing:.4px}
+.rpill.ok{background:#0c0c0f;color:#fff}
+.rpill.warn{background:#fff;color:#0c0c0f;box-shadow:inset 0 0 0 1.5px #0c0c0f}
+.rpill.mut{background:#f4f5f7;color:#17181c;box-shadow:inset 0 0 0 1px #e6e7ea}
+.rhalf{color:#31343a;font-weight:700;font-size:12px}
+.linklike{color:#0c0c0f;font-weight:700}
+.linklike:hover{background:#f2f3f5}
+.cat-name{font-weight:700;color:#17181c}
+.cat-count{background:#f4f5f7;color:#17181c;font-weight:700}
+.bar{background:#eceef0;border-radius:99px}
+.bar i{background:#0c0c0f}
+.cta{background:#0c0c0f;box-shadow:0 14px 24px -12px rgba(12,12,15,.4);font-weight:700}
+.cta:hover{box-shadow:0 16px 28px -12px rgba(12,12,15,.5)}
+.dbcard{background:#101014;box-shadow:0 24px 44px -18px rgba(16,17,20,.55)}
+.dbcard .k{color:#a9abb1}
+.dbcard .big{color:#fff}
+.dbrow{color:#c9cbd2}
+.dbrow b{color:#fff}
+.dbcard .dot{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
+.addhint{color:#4b4f57}
+.addhint b{color:#17181c}
+.brandbar .crumb{color:#31343a}
+.brandbar .crumb b{color:#0c0c0f}
+.pill{background:#f4f5f7;border:1px solid #e6e7ea;color:#17181c;font-weight:700}
+.pill.status-noanswer{background:#0c0c0f;color:#fff;border-color:#0c0c0f}
+.avatar-dot{filter:grayscale(1)}
+.avatar-dot.flagged{box-shadow:inset 0 0 0 2px #0c0c0f,0 0 0 3px #e6e7ea}
+.icon-btn{color:#17181c}
+.icon-btn:hover{background:#f2f3f5;color:#000}
+.icon-btn.flagged{color:#0c0c0f;background:#0c0c0f}
+.icon-btn.flagged:hover{background:#2a2a2e;color:#fff}
+.toolbar .field{border-color:#e6e7ea}
+.stat,.panel#placeholderX{background:#fff}
+.empty{color:#4b4f57}
+.modal{background:#fff;border-radius:26px;box-shadow:0 40px 80px -30px rgba(12,12,15,.5)}
+.toast{background:#0c0c0f;color:#fff;font-weight:600}
+.toast .tdot{background:#43d18a}
+.tin{color:#17181c}
+</style></style>
 </head>
 <body>
 <div class="app">
