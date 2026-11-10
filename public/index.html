@@ -425,13 +425,21 @@ button.mini:hover{transform:translateY(-2px);box-shadow:0 22px 38px -22px rgba(9
 .dbcard .dot{height:8px;width:8px;border-radius:50%;background:#43d18a;box-shadow:0 0 0 3px rgba(67,209,138,.25)}
 .flagrow .rname{white-space:normal}
 @media (max-width:1180px){
- .dash-grid{grid-template-columns:minmax(0,1fr)}
- .sidebar{flex-direction:row;height:auto;margin:14px;padding:10px 14px;width:auto;border-radius:22px}
- .rail-bottom{margin-top:0;margin-left:auto;display:flex}
- .nav{display:flex;padding:6px}
  .app{grid-template-columns:minmax(0,1fr)}
- .topbar{padding:0 18px}
+ .sidebar{flex-direction:row;align-items:center;gap:10px;height:auto;max-height:none;margin:12px 12px 0;padding:10px 12px;width:auto;border-radius:16px;overflow:visible}
+ .brand{padding:0}
+ .nav{display:flex;flex-wrap:wrap;gap:6px;padding:0;background:transparent;box-shadow:none}
+ .nav button{height:40px;padding:0 12px;gap:8px;border-radius:11px;font-size:12px;box-shadow:none}
+ .nav button.active{box-shadow:0 4px 10px -6px rgba(12,12,15,.5)}
+ .rail-bottom{margin:0 0 0 auto;display:flex;gap:8px}
+ .railbtn{height:42px;width:42px;border-radius:12px}
+ .topbar{height:64px;padding:0 14px}
+ .brandbar{gap:9px}
+ .logo-sm{height:38px;width:38px;border-radius:11px;font-size:15px}
+ .wordmark{font-size:16px}
  .brandbar .crumb{display:none}
+ .content{padding:18px 16px 50px}
+ .top-actions{gap:8px}
 }
 /* ===== Monochrome high-contrast theme ===== */
 body{background:linear-gradient(160deg,#ffffff 0%,#f4f5f7 55%,#eceded 100%)}
