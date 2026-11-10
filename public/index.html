@@ -426,13 +426,8 @@ button.mini:hover{transform:translateY(-2px);box-shadow:0 22px 38px -22px rgba(9
 .flagrow .rname{white-space:normal}
 @media (max-width:1180px){
  .app{grid-template-columns:minmax(0,1fr)}
- .sidebar{flex-direction:row;align-items:center;gap:10px;height:auto;max-height:none;margin:12px 12px 0;padding:10px 12px;width:auto;border-radius:16px;overflow:visible}
- .brand{padding:0}
- .nav{display:flex;flex-wrap:wrap;gap:6px;padding:0;background:transparent;box-shadow:none}
- .nav button{height:40px;padding:0 12px;gap:8px;border-radius:11px;font-size:12px;box-shadow:none}
- .nav button.active{box-shadow:0 4px 10px -6px rgba(12,12,15,.5)}
- .rail-bottom{margin:0 0 0 auto;display:flex;gap:8px}
- .railbtn{height:42px;width:42px;border-radius:12px}
+ .sidebar{display:none}
+ #menuBtn{display:grid}
  .topbar{height:64px;padding:0 14px}
  .brandbar{gap:9px}
  .logo-sm{height:38px;width:38px;border-radius:11px;font-size:15px}
@@ -525,7 +520,17 @@ body::before{background:
 .toast{background:#0c0c0f;color:#fff;font-weight:600}
 .toast .tdot{background:#43d18a}
 .tin{color:#17181c}
-</style></style>
+/* ===== Mobile nav menu ===== */
+.mnav,.mnav-backdrop{display:none}
+.mnav-backdrop.show{display:block;position:fixed;inset:0;z-index:59;background:rgba(12,12,15,.42);backdrop-filter:blur(5px)}
+.mnav.show{display:grid;position:fixed;inset:0;z-index:60}
+.mnav-panel{margin:auto;width:min(320px,88vw);max-height:86vh;overflow:auto;background:#fff;border:1px solid #e9eaec;border-radius:22px;box-shadow:0 40px 80px -30px rgba(12,12,15,.5);padding:16px;display:grid;gap:12px}
+.mnav-head{display:flex;align-items:center;gap:10px}
+.mnav-head b{flex:1;font-size:16px;font-weight:800;color:#0c0c0f}
+.mnav .nav{display:grid;gap:4px;background:transparent;box-shadow:none}
+.mnav .nav button{width:100%}
+@media (min-width:1181px){.mnav,.mnav-backdrop{display:none!important}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -549,7 +554,7 @@ body::before{background:
   <div id="sideStatus" style="display:none"></div>
 </aside>
 <main class="main">
-  <header class="topbar"><div class="brandbar"><span class="logo logo-sm">S</span><span class="wordmark">SupplierHub</span><div class="crumb"><b id="crumb">Overview</b></div></div><div class="top-actions"><button class="iconc" id="topSearch" title="Search suppliers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/></svg></button><button class="sync-chip" id="syncChip" title="PostgreSQL database status"><span class="sdot"></span><span id="syncLabel">Local only</span></button><button class="iconc" id="exportBtn" title="Export CSV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5v3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-3"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3.5"/></svg></button><div class="avatar-ring"><div class="avatar">AD</div></div></div></header>
+  <header class="topbar"><div class="brandbar"><button class="iconc" id="menuBtn" title="Menu" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span class="logo logo-sm">S</span><span class="wordmark">SupplierHub</span><div class="crumb"><b id="crumb">Overview</b></div></div><div class="top-actions"><button class="iconc" id="topSearch" title="Search suppliers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/></svg></button><button class="sync-chip" id="syncChip" title="PostgreSQL database status"><span class="sdot"></span><span id="syncLabel">Local only</span></button><button class="iconc" id="exportBtn" title="Export CSV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5v3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-3"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3.5"/></svg></button><div class="avatar-ring"><div class="avatar">AD</div></div></div></header>
   <section class="content" id="content"></section>
 </main>
 </div>
@@ -585,6 +590,21 @@ body::before{background:
    <div class="secnote" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5c0 4.6 3.2 8.6 7.5 10 4.3-1.4 7.5-5.4 7.5-10V6Z"/></svg><span>If the connection fails, click <b>Test connection</b> for the exact error. The <b>suppliers</b> table is created automatically when the server starts with a valid <code>DATABASE_URL</code>.</span></div>
   </div>
   <div class="modal-foot"><button type="button" class="btn btn-light" id="syncNowBtn" style="margin-right:auto">Sync now</button><button type="button" class="btn btn-light" id="cancelCloud">Close</button><button type="button" class="btn btn-primary" id="saveCloud">Test connection</button></div>
+ </div>
+</div>
+<div class="mnav-backdrop" id="mnavBg"></div>
+<div class="mnav" id="mnav" role="dialog" aria-label="Navigation menu">
+ <div class="mnav-panel">
+  <div class="mnav-head"><span class="logo logo-sm">S</span><b>Menu</b><button class="iconc" id="mnavClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
+  <nav class="nav" id="mnavNav">
+   <button data-page="overview" data-cat="*" data-count="" title="Home"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z"/><path d="M9.5 20.5v-5.5a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2v5.5"/></svg></span></button>
+   <button data-page="all" data-cat="*" data-count="" title="All suppliers"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span></button>
+   <button data-page="product:Food Stuff" data-cat="Food Stuff" data-count="" title="Food Stuff"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.2C10.8 6.6 8.7 6.2 6.9 7.2c-2.3 1.3-3.1 4.3-1.9 7.3 1.1 2.8 3 4.8 4.9 4.8.7 0 1.3-.3 2.1-.3s1.4.3 2.1.3c1.9 0 3.8-2 4.9-4.8 1.2-3 .4-6-1.9-7.3-1.8-1-3.9-.6-5.1 1Z"/><path d="M12 8.2c0-2.1 1.1-3.6 3.2-4.4"/></svg></span></button>
+   <button data-page="product:Stationery" data-cat="Stationery" data-count="" title="Stationery"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></span></button>
+   <button data-page="product:Cleaning Materials" data-cat="Cleaning Materials" data-count="" title="Cleaning Materials"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 15.4a2 2 0 0 0-1.3-1.3l-5.2-1.4a.5.5 0 0 1 0-1l5.2-1.4a2 2 0 0 0 1.3-1.3l1.4-5.2a.5.5 0 0 1 1 0l1.4 5.2a2 2 0 0 0 1.3 1.3l5.2 1.4a.5.5 0 0 1 0 1l-5.2 1.4a1.3 1.3 0 0 0-1.3 1.3Z"/><path d="M19.5 3v3"/><path d="M18 4.5h3"/><path d="M19.5 16.5v2.6"/><path d="M18.2 17.8h2.6"/></svg></span></button>
+   <button data-page="product:Household Items" data-cat="Household Items" data-count="" title="Household Items"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10.6 9-7.6 9 7.6"/><path d="M5.3 9V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2V9"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg></span></button>
+   <button data-page="product:Car Tyres" data-cat="Car Tyres" data-count="" title="Car Tyres"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v5.4"/><path d="M12 15.1v5.4"/><path d="M3.5 12h5.4"/><path d="M15.1 12h5.4"/></svg></span></button>
+  </nav>
  </div>
 </div>
 <div id="toasts" aria-live="polite"></div>
@@ -828,7 +848,11 @@ $("#exportBtn").onclick=()=>{
  const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="supplier-directory.csv";a.click();URL.revokeObjectURL(a.href);
 };
-document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>setPage(b.dataset.page)));
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>{setPage(b.dataset.page);closeMnav();}));
+function closeMnav(){$("#mnav").classList.remove("show");$("#mnavBg").classList.remove("show");}
+$("#menuBtn").onclick=()=>{$("#mnav").classList.add("show");$("#mnavBg").classList.add("show");};
+$("#mnavClose").onclick=closeMnav;
+$("#mnavBg").onclick=closeMnav;
 function syncFlagGroup(){$("#flagNoteGroup").style.display=$("#supplierForm").elements.status.value==="no_answer"?"":"none";}
 $("#supplierForm").elements.status.addEventListener("change",syncFlagGroup);
 /* ============ Database status dialog ============ */
