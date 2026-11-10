@@ -352,22 +352,42 @@ body::before{background:
 #exportBtn:hover{background:#fff;color:#22395a;transform:translateY(-1px)}
 #exportBtn svg{width:17px;height:17px}
 .content{padding:28px 36px 70px;max-width:1400px}
-.dash-grid{display:grid;grid-template-columns:345px minmax(0,1fr) 330px;gap:22px;align-items:start}
-.dash-col{display:grid;gap:22px;min-width:0}
-.panel{border-radius:26px;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.95);box-shadow:0 24px 45px -28px rgba(96,116,162,.4)}
-.panel-head{background:transparent}
-.hero-panel{padding:22px}
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.bento>.b-type{grid-column:span 3}
+.bento>.b-3{grid-column:span 3}
+.bento>.b-4{grid-column:span 4}
+.bento>.b-6{grid-column:span 6}
+.bento>.b-8{grid-column:span 8}
+.bento>.b-12{grid-column:span 12}
+.bento>.b-tall{grid-row:span 2}
+.bento>.panel{min-height:120px}
+.bento>.b-hero{grid-column:span 6;grid-row:span 2}
+.bento>.b-recent{grid-column:span 6;grid-row:span 2}
+.bento>.b-db{grid-column:span 6}
+.bento>.b-prod{grid-column:span 6}
+.bento>.b-follow{grid-column:span 12}
+.hero-panel{padding:24px}
 .hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#5d708c;font-size:13px;font-weight:600}
-.hero-num{margin-top:12px;font-family:var(--font-display);font-size:54px;font-weight:800;color:#22395a;letter-spacing:-.03em;line-height:1.04;font-variant-numeric:tabular-nums}
-.hero-sub{margin-top:6px;color:#7b8aa8;font-size:11.5px;font-weight:600;letter-spacing:.4px}
+.hero-num{margin-top:14px;font-family:var(--font-display);font-size:58px;font-weight:800;color:#22395a;letter-spacing:-.03em;line-height:1.04;font-variant-numeric:tabular-nums}
+.hero-sub{margin-top:7px;color:#7b8aa8;font-size:11.5px;font-weight:600;letter-spacing:.4px}
 .hero-chip{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:7px 13px;border-radius:99px;background:rgba(238,242,249,.9);color:#42536e;font-size:11px;font-weight:600;box-shadow:inset 0 0 0 1px rgba(96,116,162,.14)}
 .hero-chip b{color:#c0343b}
+.hero-actions{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:20px}
+.b-hero{display:flex;flex-direction:column}
+.hero-actions .quick-cell{flex-direction:row;justify-content:flex-start;gap:11px;padding:11px 14px;border-radius:14px}
 .quick-row{margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .quick-cell{display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 4px;border-radius:18px;background:rgba(238,242,249,.75);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9);color:#5d708c}
 .quick-cell:hover{transform:translateY(-2px);box-shadow:0 12px 20px -12px rgba(96,116,162,.45)}
 .quick-cell .qc-ico{height:38px;width:38px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 14px -8px rgba(96,116,162,.4);color:#33507a}
 .quick-cell .qc-ico svg{width:16px;height:16px}
 .quick-cell small{font-size:10.5px;font-weight:600}
+.panel{border-radius:26px;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.95);box-shadow:0 24px 45px -28px rgba(96,116,162,.4)}
+.panel-head{background:transparent}
+@media (max-width:1180px){
+ .bento>.b-type,.bento>.b-3,.bento>.b-4{grid-column:span 6}
+ .bento>.b-6,.bento>.b-8,.bento>.b-12,.bento>.b-hero,.bento>.b-recent{grid-column:span 12}
+ .bento>.b-hero,.bento>.b-recent{grid-row:auto}
+}
 .linklike{color:#33507a;font-weight:600;font-size:12px;border-radius:8px;padding:4px 6px}
 .linklike:hover{background:rgba(238,242,249,.9)}
 .recent-rows{display:grid}
@@ -628,46 +648,38 @@ function renderOverview(){
  const lastSync=localStorage.getItem("supplierhub_lastsync");
  const TYPE_META={Factory:"Manufacturers",Importer:"Import businesses",Agent:"Representatives",Wholesaler:"Wholesale businesses"};
  $("#content").innerHTML=`
- <div class="dash-grid">
-  <div class="dash-col">
-   <div class="panel hero-panel">
-    <div class="hero-top"><span>Total suppliers</span><span class="qc-ico">${ui.list}</span></div>
-    <div class="hero-num">${suppliers.length}</div>
-    <div class="hero-sub">Registered in your directory</div>
-    <div class="hero-chip">${flagged.length?`<b>${flagged.length}</b> flagged — need follow-up`:"All suppliers reachable"}</div>
-    <div class="quick-row">
-     <button class="quick-cell" id="qAdd"><span class="qc-ico">${ui.plus}</span><small>Add supplier</small></button>
-     <button class="quick-cell" data-go="all"><span class="qc-ico">${ui.search}</span><small>All suppliers</small></button>
-     <button class="quick-cell" id="qExport"><span class="qc-ico">${ui.arrow}</span><small>Export CSV</small></button>
-     <button class="quick-cell" id="qSync"><span class="qc-ico">${ui.cloud}</span><small>Sync now</small></button>
-    </div>
-   </div>
-   <div class="panel"><div class="panel-head"><div><h2>Recently added</h2><p>Your latest supplier records</p></div><button class="linklike" data-go="all">View all</button></div>
-   <div class="recent-rows">${recent.length?recent.map(s=>rowHTML(s)).join(""):`<div class="empty" style="padding:26px 22px">${EMPTY_ART}<b>No suppliers yet</b>Add your first supplier to start building the directory.</div>`}</div></div>
-  </div>
-  <div class="dash-col">
-   <div class="mini-cards">${TYPES.map(t=>`<button class="mini" data-go="type:${t}"><label>${t==="Factory"?"Factories":t+"s"}</label><strong>${countType(t)}</strong><small>${TYPE_META[t]}</small></button>`).join("")}</div>
-   <div class="panel"><div class="panel-head"><div><h2>Product breakdown</h2><p>Where your suppliers are concentrated</p></div></div>
-   <div class="panel-body">${PRODUCTS.map(p=>{const n=countProduct(p),pct=suppliers.length?Math.round(n/suppliers.length*100):0;return `<div class="cat-row"><span class="cat-ico">${icons[p]}</span><span class="cat-name">${p}</span><span class="cat-count">${n} supplier${n===1?"":"s"}</span><div class="bar"><i style="width:${pct}%"></i></div></div>`}).join("")}</div></div>
-   <div class="panel"><div class="panel-head"><div><h2>Needs follow-up</h2><p>${flagged.length?flagged.length+" supplier"+(flagged.length===1?"":"s")+" without a working phone":"Nothing flagged — all good"}</p></div></div>
-   ${flagList.length?`<div class="recent-rows">${flagList.map(s=>rowHTML(s,"flag")).join("")}</div>`:`<div class="empty" style="padding:22px"><b>All clear</b>Flagged "No answer" suppliers will collect here for follow-up.</div>`}</div>
-  </div>
-  <div class="dash-col">
-   <div class="panel"><div class="panel-head"><div><h2>Quick add</h2><p>Register a supplier in seconds</p></div></div>
-   <div class="panel-body"><button class="cta" id="qAdd2">${ui.plus} Add supplier</button><div class="addhint"><b>Pick every product category</b>the supplier provides so they appear in all related lists.</div></div></div>
-   <div class="dbcard">
-    <div class="k">Live database</div>
-    <div class="big">${suppliers.length} suppliers stored</div>
-    <div style="margin-top:14px">
-     <div class="dbrow"><span>Database</span><b>Neon PostgreSQL</b></div>
-     <div class="dbrow"><span>Status</span><span style="display:inline-flex;align-items:center;gap:8px"><span class="dot"></span>${cloudState==="err"?"Reconnecting…":"Synced"}</span></div>
-     <div class="dbrow"><span>Last sync</span><b>${lastSync?when(+lastSync):"—"}</b></div>
-    </div>
+ <div class="bento">
+  ${TYPES.map(t=>`<button class="mini b-type" data-go="type:${t}"><label>${t==="Factory"?"Factories":t+"s"}</label><strong>${countType(t)}</strong><small>${TYPE_META[t]}</small></button>`).join("")}
+  <div class="panel hero-panel b-hero">
+   <div class="hero-top"><span>Total suppliers</span><span class="qc-ico">${ui.list}</span></div>
+   <div class="hero-num">${suppliers.length}</div>
+   <div class="hero-sub">Registered in your directory</div>
+   <div class="hero-chip">${flagged.length?`<b>${flagged.length}</b> flagged — need follow-up`:"All suppliers reachable"}</div>
+   <div class="hero-actions">
+    <button class="quick-cell" id="qAdd"><span class="qc-ico">${ui.plus}</span><small>Add supplier</small></button>
+    <button class="quick-cell" data-go="all"><span class="qc-ico">${ui.search}</span><small>All suppliers</small></button>
+    <button class="quick-cell" id="qExport"><span class="qc-ico">${ui.arrow}</span><small>Export CSV</small></button>
+    <button class="quick-cell" id="qSync"><span class="qc-ico">${ui.cloud}</span><small>Sync now</small></button>
    </div>
   </div>
+  <div class="panel b-recent"><div class="panel-head"><div><h2>Recently added</h2><p>Your latest supplier records</p></div><button class="linklike" data-go="all">View all</button></div>
+  <div class="recent-rows">${recent.length?recent.map(s=>rowHTML(s)).join(""):`<div class="empty" style="padding:26px 22px">${EMPTY_ART}<b>No suppliers yet</b>Add your first supplier to start building the directory.</div>`}</div></div>
+  <div class="dbcard b-db">
+   <div class="k">Live database</div>
+   <div class="big">${suppliers.length} suppliers stored</div>
+   <div style="margin-top:14px">
+    <div class="dbrow"><span>Database</span><b>Neon PostgreSQL</b></div>
+    <div class="dbrow"><span>Status</span><span style="display:inline-flex;align-items:center;gap:8px"><span class="dot"></span>${cloudState==="err"?"Reconnecting…":"Synced"}</span></div>
+    <div class="dbrow"><span>Last sync</span><b>${lastSync?when(+lastSync):"—"}</b></div>
+   </div>
+  </div>
+  <div class="panel b-prod"><div class="panel-head"><div><h2>Product breakdown</h2><p>Where your suppliers are concentrated</p></div></div>
+  <div class="panel-body">${PRODUCTS.map(p=>{const n=countProduct(p),pct=suppliers.length?Math.round(n/suppliers.length*100):0;return `<div class="cat-row"><span class="cat-ico">${icons[p]}</span><span class="cat-name">${p}</span><span class="cat-count">${n} supplier${n===1?"":"s"}</span><div class="bar"><i style="width:${pct}%"></i></div></div>`}).join("")}</div></div>
+  <div class="panel b-follow"><div class="panel-head"><div><h2>Needs follow-up</h2><p>${flagged.length?flagged.length+" supplier"+(flagged.length===1?"":"s")+" without a working phone":"Nothing flagged — all good"}</p></div><button class="linklike" data-go="all">View all</button></div>
+  ${flagList.length?`<div class="recent-rows">${flagList.map(s=>rowHTML(s,"flag")).join("")}</div>`:`<div class="empty" style="padding:20px 22px"><b>All clear</b>Suppliers flagged "No answer" will collect here for follow-up.</div>`}</div>
  </div>`;
  animateIn();
- $("#qAdd").onclick=()=>openModal();$("#qAdd2").onclick=()=>openModal();
+ $("#qAdd").onclick=()=>openModal();
  $("#qExport").onclick=()=>$("#exportBtn").click();
  $("#qSync").onclick=()=>syncNow(true);
  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
