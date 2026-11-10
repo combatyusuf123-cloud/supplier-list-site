@@ -442,14 +442,16 @@ body::before{background:
 .panel-head h2{color:#101114;font-weight:800}
 .panel-head p{color:#4b4f57;font-weight:600;font-size:13px}
 .sidebar{background:rgba(255,255,255,.95);border:1px solid #ececee;box-shadow:0 22px 44px -24px rgba(24,26,30,.3)}
-.nav{background:#f5f6f8;box-shadow:inset 0 0 0 1px #eceded}
-.nav button{color:#1c1e22;font-weight:700;font-size:14px;background:transparent;border:0;transition:background .12s,color .12s}
+.nav{background:transparent;box-shadow:none;padding:0;display:grid;gap:4px}
+.nav button{height:47px;border-radius:12px;padding:0 13px;gap:12px;color:#3f434a;font-size:13px;font-weight:700;background:#fff;border:1px solid #ececee;box-shadow:0 6px 14px -12px rgba(12,12,15,.4);transition:background .12s,color .12s,box-shadow .12s}
 .nav button .ico{color:#3a3d43}
-.nav button:hover{background:#e9eaee;color:#000;transform:none}
+.nav button:hover{background:#f3f4f6;color:#000;transform:none;box-shadow:0 8px 16px -12px rgba(12,12,15,.5)}
 .nav button:hover .ico{color:#000}
-.nav button.active{background:#0c0c0f;color:#fff;box-shadow:none}
+.nav button.active{background:#0c0c0f;color:#fff;border-color:#0c0c0f;box-shadow:0 10px 18px -10px rgba(12,12,15,.6)}
 .nav button.active .ico{color:#fff}
 .nav button.active::before{display:none}
+.nav button.active::after{content:attr(title)}
+.nav button::after{content:attr(title) "  ·  " attr(data-count);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .logo{background:#0c0c0f;box-shadow:none}
 .railbtn{background:#fff;border:1px solid #e9eaec;box-shadow:0 8px 16px -10px rgba(24,26,30,.25);color:#1c1e22}
 .railbtn:hover{color:#000;background:#f5f6f8}
@@ -522,15 +524,15 @@ body::before{background:
 <aside class="sidebar">
   <div class="brand"><div class="logo">S</div></div>
   <div><nav class="nav" id="mainNav">
-    <button class="active" data-page="overview" title="Home"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z"/><path d="M9.5 20.5v-5.5a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2v5.5"/></svg></span></button>
+    <button class="active" data-page="overview" data-cat="*" data-count="" title="Home"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z"/><path d="M9.5 20.5v-5.5a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2v5.5"/></svg></span></button>
   </nav></div>
   <div><nav class="nav" id="productNav">
-    <button data-page="all" title="All suppliers"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span></button>
-    <button data-page="product:Food Stuff" title="Food Stuff"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.2C10.8 6.6 8.7 6.2 6.9 7.2c-2.3 1.3-3.1 4.3-1.9 7.3 1.1 2.8 3 4.8 4.9 4.8.7 0 1.3-.3 2.1-.3s1.4.3 2.1.3c1.9 0 3.8-2 4.9-4.8 1.2-3 .4-6-1.9-7.3-1.8-1-3.9-.6-5.1 1Z"/><path d="M12 8.2c0-2.1 1.1-3.6 3.2-4.4"/></svg></span></button>
-    <button data-page="product:Stationery" title="Stationery"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></span></button>
-    <button data-page="product:Cleaning Materials" title="Cleaning Materials"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 15.4a2 2 0 0 0-1.3-1.3l-5.2-1.4a.5.5 0 0 1 0-1l5.2-1.4a2 2 0 0 0 1.3-1.3l1.4-5.2a.5.5 0 0 1 1 0l1.4 5.2a2 2 0 0 0 1.3 1.3l5.2 1.4a.5.5 0 0 1 0 1l-5.2 1.4a1.3 1.3 0 0 0-1.3 1.3Z"/><path d="M19.5 3v3"/><path d="M18 4.5h3"/><path d="M19.5 16.5v2.6"/><path d="M18.2 17.8h2.6"/></svg></span></button>
-    <button data-page="product:Household Items" title="Household Items"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10.6 9-7.6 9 7.6"/><path d="M5.3 9V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2V9"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg></span></button>
-    <button data-page="product:Car Tyres" title="Car Tyres"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v5.4"/><path d="M12 15.1v5.4"/><path d="M3.5 12h5.4"/><path d="M15.1 12h5.4"/></svg></span></button>
+    <button data-page="all" data-cat="*" data-count="" title="All suppliers"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span></button>
+    <button data-page="product:Food Stuff" data-cat="Food Stuff" data-count="" title="Food Stuff"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.2C10.8 6.6 8.7 6.2 6.9 7.2c-2.3 1.3-3.1 4.3-1.9 7.3 1.1 2.8 3 4.8 4.9 4.8.7 0 1.3-.3 2.1-.3s1.4.3 2.1.3c1.9 0 3.8-2 4.9-4.8 1.2-3 .4-6-1.9-7.3-1.8-1-3.9-.6-5.1 1Z"/><path d="M12 8.2c0-2.1 1.1-3.6 3.2-4.4"/></svg></span></button>
+    <button data-page="product:Stationery" data-cat="Stationery" data-count="" title="Stationery"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></span></button>
+    <button data-page="product:Cleaning Materials" data-cat="Cleaning Materials" data-count="" title="Cleaning Materials"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 15.4a2 2 0 0 0-1.3-1.3l-5.2-1.4a.5.5 0 0 1 0-1l5.2-1.4a2 2 0 0 0 1.3-1.3l1.4-5.2a.5.5 0 0 1 1 0l1.4 5.2a2 2 0 0 0 1.3 1.3l5.2 1.4a.5.5 0 0 1 0 1l-5.2 1.4a1.3 1.3 0 0 0-1.3 1.3Z"/><path d="M19.5 3v3"/><path d="M18 4.5h3"/><path d="M19.5 16.5v2.6"/><path d="M18.2 17.8h2.6"/></svg></span></button>
+    <button data-page="product:Household Items" data-cat="Household Items" data-count="" title="Household Items"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10.6 9-7.6 9 7.6"/><path d="M5.3 9V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2V9"/><path d="M9.5 21v-5.4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg></span></button>
+    <button data-page="product:Car Tyres" data-cat="Car Tyres" data-count="" title="Car Tyres"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v5.4"/><path d="M12 15.1v5.4"/><path d="M3.5 12h5.4"/><path d="M15.1 12h5.4"/></svg></span></button>
   </nav></div>
   <div class="rail-bottom">
     <button class="railbtn" id="dbBtn" title="PostgreSQL database status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8.5" ry="3"/><path d="M3.5 5.5v13c0 1.7 3.8 3 8.5 3s8.5-1.3 8.5-3v-13"/><path d="M3.5 12c0 1.7 3.8 3 8.5 3s8.5-1.3 8.5-3"/></svg></button>
@@ -702,8 +704,14 @@ function pageTitle(){if(page==="overview")return"Overview";if(page==="all")retur
 function avatar(s){const name=String(s&&s.name||"").trim();let h=0;for(let i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;const hue=h%360;const ini=name.replace(/[^\p{L}\p{N} ]/gu,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"S";return `<span class="avatar-dot${s.status==="no_answer"?" flagged":""}" style="background:hsl(${hue} 70% 91%);color:hsl(${hue} 55% 30%)" aria-hidden="true">${esc(ini)}</span>`;}
 function statCard(label,value,icon,sub){return `<div class="stat"><div class="stat-top"><span>${label}</span><span class="stat-icon">${icon}</span></div><strong>${value}</strong><small>${sub}</small></div>`;}
 function animateIn(){[...$("#content").children].forEach((el,i)=>{el.classList.add("rise");el.style.animationDelay=Math.min(i*70,280)+"ms";});}
+function updateRail(){
+ document.querySelectorAll(".nav button[data-cat]").forEach(b=>{
+  b.dataset.count=String(b.dataset.cat==="*"?suppliers.length:countProduct(b.dataset.cat));
+ });
+}
 function render(){
  $("#crumb").textContent=pageTitle();
+ updateRail();
  if(page==="overview"){renderOverview();return;}
  renderDirectory();
 }
