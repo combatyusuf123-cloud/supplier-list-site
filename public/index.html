@@ -624,6 +624,16 @@ tbody tr:last-child td{border-bottom:none}
 <script>
 const TYPES=["Factory","Importer","Agent","Wholesaler"];
 const PRODUCTS=["Food Stuff","Stationery Materials","Cleaning Materials","Household Items","Construction Materials","Textile","Plastic Products","Car Tyres"];
+const PRODUCT_META={
+ "Food Stuff":"Packaged and bulk food suppliers — rice, cooking oil, pasta, flour, sugar, canned goods, spices, coffee & tea, juices and other grocery items.",
+ "Stationery Materials":"Office and school supplies — pens, paper, notebooks, printers & toner, envelopes, adhesives and desk accessories.",
+ "Cleaning Materials":"Cleaning and hygiene supplies — detergents, disinfectants, soaps, tissues, mops, brushes, gloves and janitorial equipment.",
+ "Household Items":"Everyday home goods — kitchenware, plastic-ware, storage, small appliances, decor and general home essentials.",
+ "Construction Materials":"Building supplies — cement, rebar, paint, tiles, pipes, wiring, sanitary-ware, doors, windows and finishing materials.",
+ "Textile":"Fabrics and clothing materials — cotton, wool, yarns, garments, curtains, bed sheets and tailoring supplies.",
+ "Plastic Products":"Plastic goods — containers, packaging, crates, bottles, pipes, household plastics and industrial plastic items.",
+ "Car Tyres":"Tyres, tubes and wheel-related accessories for passenger and commercial vehicles."
+};
 const svg=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
 const icons={
   "Factory":svg('<path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/>'),
@@ -833,7 +843,7 @@ function typePill(t){return `<span class="pill type-${t.toLowerCase()}">${esc(t)
 function statusPill(s){if(!s||s.status!=="no_answer")return"";const d=s.flag_date?new Date(s.flag_date).toLocaleDateString(undefined,{day:"numeric",month:"short"}):"";const tip=(s.flag_note?esc(s.flag_note):"No answer")+(d?" · "+d:"");return `<span class="pill status-noanswer" title="${tip}">No answer${d?" · "+d:""}</span>`}
 function productPill(p){return `<span class="pill">${esc(p)}</span>`}
 function renderDirectory(){
- let title=pageTitle(),desc=page==="all"?"Search the complete supplier database and filter it by supplier type or product.":page.startsWith("type:")?`A dedicated list of all suppliers classified as ${page.split(":")[1]}.`:`Suppliers that provide ${page.split(":")[1]}.`;
+ let title=pageTitle(),cat=page.split(":")[1],desc=page==="all"?"Search the complete supplier database and filter it by supplier type or product.":page.startsWith("type:")?`A dedicated list of all suppliers classified as ${cat}.`:(PRODUCT_META[cat]||`Suppliers that provide ${cat}.`);
  let list=suppliers.filter(s=>page==="all"||(page.startsWith("type:")?s.type===page.split(":")[1]:s.products.includes(page.split(":")[1])));
  $("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">Supplier directory</div><h1>${esc(title)}</h1><p>${esc(desc)}</p></div><button class="btn btn-primary" id="addBtn">${ui.plus} Add supplier</button></div>
  <div class="panel"><div class="toolbar"><div class="search">${ui.search}<input id="searchInput" placeholder="Search name, TIN, contact, phone or address..."></div>${page==="all"?`<select class="field" id="typeFilter"><option value="">All supplier types</option>${TYPES.map(t=>`<option>${t}</option>`).join("")}</select>`:""}<select class="field" id="productFilter"><option value="">All product categories</option>${PRODUCTS.map(p=>`<option>${p}</option>`).join("")}</select><select class="field" id="statusFilter"><option value="">All statuses</option><option value="active">Active</option><option value="no_answer">No answer</option></select><span class="count-badge" id="resultCount">${list.length} records</span></div>
