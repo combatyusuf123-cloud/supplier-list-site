@@ -47,6 +47,8 @@ create table if not exists suppliers (
   address text default '',
   products jsonb not null default '[]',
   notes text default '',
+  brand text default '',
+  prices jsonb not null default '[]',
   status text not null default 'active',
   flag_note text default '',
   flag_date bigint default 0,
@@ -59,6 +61,8 @@ create index if not exists suppliers_updated_at_idx on suppliers (updated_at);
 async function initDb() {
   if (!pool) return;
   await pool.query(SCHEMA);
+  await pool.query("alter table suppliers add column if not exists brand text default ''");
+  await pool.query("alter table suppliers add column if not exists prices jsonb not null default '[]'::jsonb");
 }
 
 // row -> client shape
@@ -72,6 +76,8 @@ const rowOut = r => ({
   address: r.address || "",
   products: Array.isArray(r.products) ? r.products : JSON.parse(r.products || "[]"),
   notes: r.notes || "",
+  brand: r.brand || "",
+  prices: Array.isArray(r.prices) ? r.prices : JSON.parse(r.prices || "[]"),
   status: r.status || "active",
   flag_note: r.flag_note || "",
   flag_date: Number(r.flag_date) || 0,
@@ -79,9 +85,12 @@ const rowOut = r => ({
   updated_at: Number(r.updated_at) || 0,
 });
 
-const COLS = ["id", "name", "tin", "type", "contact", "phone", "address", "products", "notes", "status", "flag_note", "flag_date", "created", "updated_at"];
+const COLS = ["id", "name", "tin", "type", "contact", "phone", "address", "products", "notes", "brand", "prices", "status", "flag_note", "flag_date", "created", "updated_at"];
 
 function toParams(s) {
+  const prices = (Array.isArray(s.prices) ? s.prices : [])
+    .map(p => ({ item: String(p.item || "").slice(0, 200), unit: String(p.unit || "Each").slice(0, 40), price: Number(p.price) || 0, date: Number(p.date) || Date.now() }))
+    .filter(p => p.item);
   return [
     String(s.id || ""),
     String(s.name || ""),
@@ -92,6 +101,8 @@ function toParams(s) {
     String(s.address || ""),
     JSON.stringify(Array.isArray(s.products) ? s.products : []),
     String(s.notes || ""),
+    String(s.brand || ""),
+    JSON.stringify(prices),
     s.status === "no_answer" ? "no_answer" : "active",
     String(s.flag_note || ""),
     Number(s.flag_date) || 0,
@@ -124,7 +135,8 @@ app.post("/api/suppliers", async (req, res) => {
            on conflict (id) do update set
              name = excluded.name, tin = excluded.tin, type = excluded.type, contact = excluded.contact,
              phone = excluded.phone, address = excluded.address, products = excluded.products,
-             notes = excluded.notes, status = excluded.status, flag_note = excluded.flag_note,
+             notes = excluded.notes, brand = excluded.brand, prices = excluded.prices,
+             status = excluded.status, flag_note = excluded.flag_note,
              flag_date = excluded.flag_date, updated_at = excluded.updated_at`,
           s
         );
