@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Supplier List | Supplier Directory</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230d9488'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<title>Zelalem Rediet Trading | Supplier Directory</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -353,6 +354,8 @@ body::before{content:none}
 .brandbar{display:flex;align-items:center;gap:10px;min-width:0}
 .logo-sm{flex:none;height:28px;width:28px;border-radius:8px;display:grid;place-items:center;background:#111;color:#fff;font-size:13px;font-weight:700;box-shadow:none}
 .wordmark{font-size:14.5px;font-weight:700;color:#191b1f;letter-spacing:-.01em;white-space:nowrap}
+.brand-logo{height:36px;width:auto;display:block}
+.brand-logo.sm{height:28px}
 .brandbar .crumb{display:flex;align-items:center;gap:6px;margin:0;padding:0;border:none;background:none;box-shadow:none;color:#9ba1ab;font-size:12.5px;white-space:nowrap}
 .brandbar .crumb b{color:#191b1f;font-weight:600;font-size:12.5px}
 .top-actions{display:flex;align-items:center;gap:8px}
@@ -519,6 +522,7 @@ tbody tr:last-child td{border-bottom:none}
  .sidebar{display:none}
  #menuBtn{display:grid!important}
  .topbar{height:56px;padding:0 18px}
+ .brand-logo{height:30px}
  .brandbar .crumb{display:none}
  .content{padding:28px 18px 70px}
  .home-grid{grid-template-columns:1fr}
@@ -571,7 +575,7 @@ tbody tr:last-child td{border-bottom:none}
 <body>
 <div class="app">
 <aside class="sidebar">
-  <div class="brand"><span class="logo">S</span><strong>SupplierHub</strong></div>
+  <div class="brand"><img class="brand-logo" src="/logo.png" alt="Zelalem Rediet Trading"></div>
   <div class="nav-group">
    <div class="nav-label">Directory</div>
    <nav class="nav" id="mainNav">
@@ -600,7 +604,7 @@ tbody tr:last-child td{border-bottom:none}
 </aside>
 
 <main class="main">
-  <header class="topbar"><div class="brandbar"><button class="iconc" id="menuBtn" title="Menu" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span class="logo logo-sm">S</span><span class="wordmark">SupplierHub</span><div class="crumb"><b id="crumb">Overview</b></div></div><div class="top-actions"><button class="iconc" id="topSearch" title="Search suppliers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/></svg></button><button class="sync-chip" id="syncChip" title="PostgreSQL database status"><span class="sdot"></span><span id="syncLabel">Local only</span></button><button class="iconc" id="exportBtn" title="Export CSV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5v3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-3"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3.5"/></svg></button><div class="avatar-ring"><div class="avatar">AD</div></div></div></header>
+  <header class="topbar"><div class="brandbar"><button class="iconc" id="menuBtn" title="Menu" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><img class="brand-logo" src="/logo.png" alt="Zelalem Rediet Trading"><div class="crumb"><b id="crumb">Overview</b></div></div><div class="top-actions"><button class="iconc" id="topSearch" title="Search suppliers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/></svg></button><button class="sync-chip" id="syncChip" title="PostgreSQL database status"><span class="sdot"></span><span id="syncLabel">Local only</span></button><button class="iconc" id="exportBtn" title="Export CSV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5v3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-3"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3.5"/></svg></button><div class="avatar-ring"><div class="avatar">AD</div></div></div></header>
   <section class="content" id="content"></section>
 </main>
 </div>
@@ -643,7 +647,7 @@ tbody tr:last-child td{border-bottom:none}
 <div class="mnav-backdrop" id="mnavBg"></div>
 <div class="mnav" id="mnav" role="dialog" aria-label="Navigation menu">
  <div class="mnav-panel">
-  <div class="mnav-head"><span class="logo logo-sm">S</span><b>Menu</b><button class="iconc" id="mnavClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
+  <div class="mnav-head"><img class="brand-logo sm" src="/logo.png" alt="Zelalem Rediet Trading"><b>Menu</b><button class="iconc" id="mnavClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
   <nav class="nav" id="mnavNav">
    <button data-page="overview" data-cat="*" data-count="" title="Home"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z"/><path d="M9.5 20.5v-5.5a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2v5.5"/></svg></span></button>
    <button data-page="all" data-cat="*" data-count="" title="All suppliers"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span></button>
