@@ -317,7 +317,7 @@ tbody tr .icon-btn.flagged{opacity:1}
 /* ============================================================
    MINIMAL LIGHT THEME — Notion / Stripe style
    ============================================================ */
-body{background:#fff;color:#191b1f;font:400 14.5px/1.6 Inter,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:#fff;color:#191b1f;font:400 14.5px/1.6 Inter,-apple-system,"Segoe UI",Roboto,"Noto Sans Ethiopic",Nyala,sans-serif;-webkit-font-smoothing:antialiased}
 body::before{content:none}
 ::selection{background:#111;color:#fff}
 
@@ -829,23 +829,29 @@ function render(){
  renderDirectory();
 }
 let marketData=null;
+let marketLang=localStorage.getItem("supplierhub_mr_lang")||"en";
+const MR_T={
+ en:{eyebrow:"Research archive",title:"Market research",load:"Loading price surveys…",fail:"Could not load the research archive. Refresh to try again.",desc:"Price surveys collected from tenders — what suppliers quoted per item, brand and unit. Prices include 15% VAT.",toggle:"አማርኛ",s1:"Price surveys",s1s:"clients &amp; tenders",s2:"Price points",s2s:"item quotes recorded",s3:"Archive updated",s3s:"built from the research workbook",s4:"Currency",s4s:"unit price incl. 15% VAT",search:"Search item, brand or supplier…",all:"All clients &amp; tenders",nodate:"date not recorded",quotes:"item quotes",noq:"No matching quotes",nos:"Try another search or pick a different client.",cnt:"quotes",h:["Item","Brand","Supplier","Unit","Qty","Unit price (ETB)"]},
+ am:{eyebrow:"የገበያ ጥናት መዝገብ",title:"የገበያ ጥናት",load:"የዋጋ ጥናቶች በመጫን ላይ…",fail:"መዝገቡን መጫን አልተቻለም። እባክዎ ገጹን ይሪዱ።",desc:"ከጨረታዎች የተሰበሰበ የዋጋ ጥናት — አቅራቢዎች በእቃ አይነት፣ በብራንድና በመለኪያ የገቡት ዋጋ። ዋጋዎች 15% ቫት አካተዋል።",toggle:"English",s1:"የጥናቶች ብዛት",s1s:"ደንበኞች እና ጨረታዎች",s2:"የዋጋ መረጃዎች",s2s:"የተመዘገቡ የእቃ ዋጋዎች",s3:"የመዝገብ ማዘመን",s3s:"ከጥናቱ ሰሌዳ የተሰራ",s4:"ምንዛሬ",s4s:"የአንዱ ዋጋ ከ15% ቫት ጋር",search:"እቃ፣ ብራንድ ወይም አቅራቢ ይፈልጉ…",all:"ሁሉንም ደንበኞች እና ጨረታዎች",nodate:"ቀን አልተመዘገበም",quotes:"የእቃ ዋጋዎች",noq:"ተዛማጅ ዋጋ አልተገኘም",nos:"ሌላ ፍለጋ ይሞክሩ ወይም ሌላ ደንበኛ ይምረጡ።",cnt:"ዋጋዎች",h:["እቃው አይነት","ብራንድ","አቅራቢ","መለኪያ","ብዛት","የአንዱ ዋጋ (ብር)"]}
+};
 async function renderMarket(){
+ const t=MR_T[marketLang]||MR_T.en;
  if(!marketData){
-  $("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">Research archive</div><h1>Market research</h1><p>Loading price surveys…</p></div></div>`;
-  try{const r=await fetch("/market.json");marketData=await r.json();}catch(e){$("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">Research archive</div><h1>Market research</h1><p>Could not load the research archive. Refresh to try again.</p></div></div>`;return;}
+  $("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.load}</p></div></div>`;
+  try{const r=await fetch("/market.json");marketData=await r.json();}catch(e){$("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.fail}</p></div></div>`;return;}
  }
  const R=marketData.researches,totalItems=R.reduce((n,x)=>n+x.items.length,0);
  $("#content").innerHTML=`
- <div class="page-head"><div><div class="eyebrow">Research archive</div><h1>Market research</h1><p>Price surveys collected from tenders — what suppliers quoted per item, brand and unit. Prices include 15% VAT.</p></div></div>
+ <div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.desc}</p></div><button class="btn btn-light" id="mrLang" title="Change language">${t.toggle}</button></div>
  <div class="stat-strip">
-  <div class="stat-cell"><label>Price surveys</label><strong>${R.length}</strong><small>clients &amp; tenders</small></div>
-  <div class="stat-cell"><label>Price points</label><strong>${totalItems}</strong><small>item quotes recorded</small></div>
-  <div class="stat-cell"><label>Archive updated</label><strong style="font-size:16px;padding-top:9px">${marketData.updatedAt?when(marketData.updatedAt):"—"}</strong><small>built from the research workbook</small></div>
-  <div class="stat-cell"><label>Currency</label><strong style="font-size:16px;padding-top:9px">ETB</strong><small>unit price incl. 15% VAT</small></div>
+  <div class="stat-cell"><label>${t.s1}</label><strong>${R.length}</strong><small>${t.s1s}</small></div>
+  <div class="stat-cell"><label>${t.s2}</label><strong>${totalItems}</strong><small>${t.s2s}</small></div>
+  <div class="stat-cell"><label>${t.s3}</label><strong style="font-size:16px;padding-top:9px">${marketData.updatedAt?when(marketData.updatedAt):"—"}</strong><small>${t.s3s}</small></div>
+  <div class="stat-cell"><label>${t.s4}</label><strong style="font-size:16px;padding-top:9px">ETB</strong><small>${t.s4s}</small></div>
  </div>
  <div class="panel" style="margin-top:26px"><div class="toolbar">
-  <div class="search">${ui.search}<input id="mrSearch" placeholder="Search item, brand or supplier…"></div>
-  <select class="field" id="mrClient"><option value="">All clients &amp; tenders</option>${R.map(r=>`<option value="${esc(r.sheet)}">${esc(r.client)}${r.date?" — "+esc(r.date):""}</option>`).join("")}</select>
+  <div class="search">${ui.search}<input id="mrSearch" placeholder="${t.search}"></div>
+  <select class="field" id="mrClient"><option value="">${t.all}</option>${R.map(r=>`<option value="${esc(r.sheet)}">${esc(r.client)}${r.date?" — "+esc(r.date):""}</option>`).join("")}</select>
   <span class="count-badge" id="mrCount"></span>
  </div><div id="mrHost"></div></div>`;
  const draw=()=>{
@@ -855,12 +861,14 @@ async function renderMarket(){
    const rows=r.items.filter(x=>[x.item,x.brand,x.supplier,x.unit].join(" ").toLowerCase().includes(q));
    if(!rows.length)return"";
    n+=rows.length;
-   return `<div class="mr-head panel-head"><div><h2>${esc(r.client)}</h2><p>${esc(r.date||"date not recorded")} · ${r.items.length} item quotes</p></div></div>
-   <div class="table-wrap"><table><thead><tr><th>Item</th><th>Brand</th><th>Supplier</th><th>Unit</th><th>Qty</th><th>Unit price (ETB)</th></tr></thead><tbody>${rows.map(x=>`<tr><td><span class="supplier-name">${esc(x.item)}</span></td><td>${esc(x.brand||"—")}</td><td>${esc(x.supplier||"—")}</td><td>${esc(x.unit||"—")}</td><td>${x.qty?x.qty.toLocaleString():"—"}</td><td><b class="mr-price">${x.price?x.price.toLocaleString():"—"}</b></td></tr>`).join("")}</tbody></table></div>`;
-  }).join("")||`<div class="empty"><b>No matching quotes</b>Try another search or pick a different client.</div>`;
-  $("#mrCount").textContent=n+" quotes";
+   return `<div class="mr-head panel-head"><div><h2>${esc(r.client)}</h2><p>${esc(r.date||t.nodate)} · ${r.items.length} ${t.quotes}</p></div></div>
+   <div class="table-wrap"><table><thead><tr>${t.h.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(x=>`<tr><td><span class="supplier-name">${esc(x.item)}</span></td><td>${esc(x.brand||"—")}</td><td>${esc(x.supplier||"—")}</td><td>${esc(x.unit||"—")}</td><td>${x.qty?x.qty.toLocaleString():"—"}</td><td><b class="mr-price">${x.price?x.price.toLocaleString():"—"}</b></td></tr>`).join("")}</tbody></table></div>`;
+  }).join("")||`<div class="empty"><b>${t.noq}</b>${t.nos}</div>`;
+  $("#mrCount").textContent=n+" "+t.cnt;
  };
- $("#mrSearch").addEventListener("input",draw);$("#mrClient").addEventListener("change",draw);draw();
+ $("#mrSearch").addEventListener("input",draw);$("#mrClient").addEventListener("change",draw);
+ $("#mrLang").onclick=()=>{marketLang=marketLang==="en"?"am":"en";localStorage.setItem("supplierhub_mr_lang",marketLang);renderMarket();};
+ draw();
 }
 function when(ts){
  if(!ts)return"—";
