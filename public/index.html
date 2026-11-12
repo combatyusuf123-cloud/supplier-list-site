@@ -530,6 +530,18 @@ tbody tr:last-child td{border-bottom:none}
 .mnav-head b{flex:1;font-size:14.5px;font-weight:700;color:#191b1f}
 .mnav .nav button{height:38px}
 @media (min-width:1181px){.mnav,.mnav-backdrop{display:none!important}}
+
+/* ---------- supplier detail ---------- */
+.vm-body{padding:18px 22px}
+.vm-sub{margin:2px 0 0;font-size:12px;color:#9ba1ab}
+.vm-row{display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid #f1f2f4;font-size:13px}
+.vm-row:last-child{border-bottom:none}
+.vm-k{color:#9ba1ab;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding-top:3px}
+.vm-v{color:#191b1f;min-width:0;word-break:break-word}
+.vm-v .pill{margin:2px 4px 2px 0}
+#tableHost tbody tr[data-view]{cursor:pointer}
+.btn.danger{background:#b42318}
+.btn.danger:hover{background:#9c1e15}
 </style>
 </head>
 <body>
@@ -620,7 +632,13 @@ tbody tr:last-child td{border-bottom:none}
   </nav>
  </div>
 </div>
-<div id="toasts" aria-live="polite"></div>
+ <div class="modal-backdrop" id="viewModal">
+ <div class="modal" role="dialog" aria-modal="true" style="width:min(620px,100%)">
+  <div class="modal-head"><div class="mh-brand"><span class="mh-ico" id="vmIco">S</span><div><h2 id="vmName">Supplier</h2><p class="vm-sub" id="vmSub"></p></div></div><button class="icon-btn" id="vmClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M17.5 6.5 6.5 17.5"/><path d="m6.5 6.5 11 11"/></svg></button></div>
+  <div class="modal-content vm-body" id="vmBody"></div>
+  <div class="modal-foot"><button class="btn btn-light" id="vmFlag"></button><button class="btn btn-light" id="vmEdit">Edit</button><button class="btn danger" id="vmDelete" style="margin-left:auto">Delete</button></div>
+ </div></div>
+ <div id="toasts" aria-live="polite"></div>
 <script>
 const TYPES=["Factory","Importer","Agent","Wholesaler"];
 const PRODUCTS=["Food Stuff","Stationery Materials","Cleaning Materials","Household Items","Construction Materials","Textile","Plastic Products","Car Tyres"];
@@ -785,9 +803,9 @@ function when(ts){
 function rowHTML(s,mode){
  if(mode==="flag"){
   const d=s.flag_date?new Date(s.flag_date).toLocaleDateString([],{day:"numeric",month:"short"}):"";
-  return `<div class="rrow flagrow"><span>${avatar(s)}</span><div class="who"><span class="rname">${esc(s.name)}</span><span class="rtime">${esc(s.flag_note||"Phone not reachable")}</span></div><div class="rright"><span class="rhalf rhalfd">${d||"—"}</span></div></div>`;
+     return `<div class="rrow flagrow" data-view="${esc(s.id)}"><span>${avatar(s)}</span><div class="who"><span class="rname">${esc(s.name)}</span><span class="rtime">${esc(s.flag_note||"Phone not reachable")}</span></div><div class="rright"><span class="rhalf rhalfd">${d||"—"}</span></div></div>`;
  }
- return `<div class="rrow"><span>${avatar(s)}</span><div class="who"><span class="rname">${esc(s.name)}</span><span class="rtime">${when(s.created)}</span></div><div class="rright"><span class="rpill ${s.status==="no_answer"?"warn":"ok"}">${s.status==="no_answer"?"No answer":"Active"}</span></div></div>`;
+  return `<div class="rrow" data-view="${esc(s.id)}"><span>${avatar(s)}</span><div class="who"><span class="rname">${esc(s.name)}</span><span class="rtime">${when(s.created)}</span></div><div class="rright"><span class="rpill ${s.status==="no_answer"?"warn":"ok"}">${s.status==="no_answer"?"No answer":"Active"}</span></div></div>`;
 }
 function renderOverview(){
  const flagged=suppliers.filter(s=>s.status==="no_answer");
@@ -838,6 +856,7 @@ function renderOverview(){
  $("#qExport").onclick=()=>$("#exportBtn").click();
  $("#qSync").onclick=()=>syncNow(true);
  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
+ document.querySelectorAll("#content [data-view]").forEach(r=>r.onclick=()=>viewSupplier(r.dataset.view));
 }
 function typePill(t){return `<span class="pill type-${t.toLowerCase()}">${esc(t)}</span>`}
 function statusPill(s){if(!s||s.status!=="no_answer")return"";const d=s.flag_date?new Date(s.flag_date).toLocaleDateString(undefined,{day:"numeric",month:"short"}):"";const tip=(s.flag_note?esc(s.flag_note):"No answer")+(d?" · "+d:"");return `<span class="pill status-noanswer" title="${tip}">No answer${d?" · "+d:""}</span>`}
@@ -855,10 +874,11 @@ function renderDirectory(){
  if(pendingQuery!==null){const q=pendingQuery;pendingQuery=null;$("#searchInput").value=q;update();}
 }
 function drawTable(rows){
- $("#tableHost").innerHTML=rows.length?`<div class="table-wrap"><table><thead><tr><th>Supplier</th><th>TIN</th><th>Supplier type</th><th>Product categories</th><th>Contact person</th><th>Phone</th><th>Address</th><th>Actions</th></tr></thead><tbody>${rows.map(s=>`<tr><td><div class="sup-cell">${avatar(s)}<div><span class="supplier-name">${esc(s.name)}</span><span class="sub">${esc(s.id)}</span></div></div></td><td>${s.tin?`<span class="tin">${esc(s.tin)}</span>`:"—"}</td><td>${typePill(s.type)}${statusPill(s)}</td><td>${s.products.map(productPill).join("")}</td><td>${esc(s.contact||"—")}</td><td>${esc(s.phone||"—")}</td><td>${esc(s.address||"—")}</td><td><div class="actions"><button class="icon-btn ${s.status==="no_answer"?"flagged":""}" data-flag="${s.id}" title="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}" aria-label="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}">${ui.flag}</button><button class="icon-btn" data-edit="${s.id}" title="Edit" aria-label="Edit">${ui.pencil}</button><button class="icon-btn danger" data-delete="${s.id}" title="Delete" aria-label="Delete">${ui.trash}</button></div></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${EMPTY_ART}<b>No matching suppliers</b>Try another search or add a supplier to this section.</div>`;
+ $("#tableHost").innerHTML=rows.length?`<div class="table-wrap"><table><thead><tr><th>Supplier</th><th>TIN</th><th>Supplier type</th><th>Product categories</th><th>Contact person</th><th>Phone</th><th>Address</th><th>Actions</th></tr></thead><tbody>${rows.map(s=>`<tr data-view="${esc(s.id)}"><td><div class="sup-cell">${avatar(s)}<div><span class="supplier-name">${esc(s.name)}</span><span class="sub">${esc(s.id)}</span></div></div></td><td>${s.tin?`<span class="tin">${esc(s.tin)}</span>`:"—"}</td><td>${typePill(s.type)}${statusPill(s)}</td><td>${s.products.map(productPill).join("")}</td><td>${esc(s.contact||"—")}</td><td>${esc(s.phone||"—")}</td><td>${esc(s.address||"—")}</td><td><div class="actions"><button class="icon-btn ${s.status==="no_answer"?"flagged":""}" data-flag="${s.id}" title="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}" aria-label="${s.status==="no_answer"?"Mark as active":"Flag as No answer"}">${ui.flag}</button><button class="icon-btn" data-edit="${s.id}" title="Edit" aria-label="Edit">${ui.pencil}</button><button class="icon-btn danger" data-delete="${s.id}" title="Delete" aria-label="Delete">${ui.trash}</button></div></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">${EMPTY_ART}<b>No matching suppliers</b>Try another search or add a supplier to this section.</div>`;
  document.querySelectorAll("[data-flag]").forEach(b=>b.onclick=()=>toggleFlag(b.dataset.flag));
  document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openModal(b.dataset.edit));
  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>removeSupplier(b.dataset.delete));
+ document.querySelectorAll("#tableHost tr[data-view]").forEach(tr=>tr.onclick=e=>{if(e.target.closest(".icon-btn"))return;viewSupplier(tr.dataset.view);});
 }
 function openModal(id=null){
  editingId=id;const s=id?suppliers.find(x=>x.id===id):null;
@@ -869,6 +889,25 @@ function openModal(id=null){
  $("#modal").classList.add("show");
 }
 function closeModal(){$("#modal").classList.remove("show");editingId=null;}
+function viewSupplier(id){
+ const s=suppliers.find(x=>x.id===id);if(!s)return;
+ $("#vmName").textContent=s.name;
+ $("#vmSub").textContent=s.id+(s.tin?" · TIN "+s.tin:"");
+ $("#vmIco").textContent=(String(s.name).trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]||"").join("")||"S").toUpperCase();
+ $("#vmBody").innerHTML=`<div class="vm-row"><span class="vm-k">Provides</span><span class="vm-v">${s.products.map(p=>`<span class="pill" title="${esc(PRODUCT_META[p]||"")}">${esc(p)}</span>`).join("")||"—"}</span></div>
+ <div class="vm-row"><span class="vm-k">Supplier type</span><span class="vm-v">${typePill(s.type)}${statusPill(s)}</span></div>
+ <div class="vm-row"><span class="vm-k">Contact person</span><span class="vm-v">${esc(s.contact||"—")}</span></div>
+ <div class="vm-row"><span class="vm-k">Phone</span><span class="vm-v">${esc(s.phone||"—")}</span></div>
+ <div class="vm-row"><span class="vm-k">Address</span><span class="vm-v">${esc(s.address||"—")}</span></div>
+ <div class="vm-row"><span class="vm-k">Status</span><span class="vm-v">${s.status==="no_answer"?`Flagged — ${esc(s.flag_note||"phone not reachable")}${s.flag_date?" ("+new Date(s.flag_date).toLocaleDateString([],{day:"numeric",month:"short"})+")":""}`:"Active — reachable"}</span></div>
+ <div class="vm-row"><span class="vm-k">Notes</span><span class="vm-v">${esc(s.notes||"—")}</span></div>
+ <div class="vm-row"><span class="vm-k">Added</span><span class="vm-v">${when(s.created)}</span></div>`;
+ $("#vmEdit").onclick=()=>{$("#viewModal").classList.remove("show");openModal(id);};
+ $("#vmDelete").onclick=()=>{$("#viewModal").classList.remove("show");removeSupplier(id);};
+ const fl=$("#vmFlag");fl.textContent=s.status==="no_answer"?"Mark as active":"Flag as no answer";
+ fl.onclick=()=>{$("#viewModal").classList.remove("show");toggleFlag(id);};
+ $("#viewModal").classList.add("show");
+}
 function removeSupplier(id){const s=suppliers.find(x=>x.id===id);if(s&&confirm(`Delete ${s.name} permanently?\n\nTip: if the phone just stopped working, use the flag button instead — it keeps the supplier with a "No answer" mark instead of erasing it.`)){suppliers=suppliers.filter(x=>x.id!==id);toast(s.name+" deleted from the directory","warn");afterMutation([],[id]);}}
 function toggleFlag(id){const s=suppliers.find(x=>x.id===id);if(!s)return;s.status=s.status==="no_answer"?"active":"no_answer";s.updated_at=Date.now();if(s.status==="no_answer"){s.flag_date=Date.now();toast(s.name+" flagged as No answer","warn");}else{s.flag_date=0;toast(s.name+" marked active again","ok");}afterMutation([id],[]);}
 $("#supplierForm").addEventListener("submit",e=>{
@@ -881,6 +920,8 @@ $("#supplierForm").addEventListener("submit",e=>{
  closeModal();afterMutation([record.id],[]);
 });
 $("#closeModal").onclick=closeModal;$("#cancelModal").onclick=closeModal;$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+$("#vmClose").onclick=()=>$("#viewModal").classList.remove("show");
+$("#viewModal").addEventListener("click",e=>{if(e.target.id==="viewModal")$("#viewModal").classList.remove("show");});
 $("#exportBtn").onclick=()=>{
  const rows=[["ID","Supplier Name","TIN","Supplier Category","Status","Product Categories","Contact Person","Phones","Address","Notes","Flag Note"],...suppliers.map(s=>[s.id,s.name,s.tin,s.type,s.status==="no_answer"?"No answer":"Active",s.products.join("; "),s.contact,s.phone,s.address,s.notes,s.status==="no_answer"?[s.flag_note,s.flag_date?new Date(s.flag_date).toLocaleDateString():""].filter(Boolean).join(" · "):""])];
  const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
