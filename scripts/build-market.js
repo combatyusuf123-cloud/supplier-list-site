@@ -57,14 +57,38 @@ for (const name of wb.SheetNames) {
   }
   if (!client) client = name;
 
-  // date: row mentioning ቀን/Date
-  let date = "";
-  for (let r = 0; r < hIdx && !date; r++) {
+  // date: row mentioning ቀን/Date (Amharic label => Ethiopian calendar)
+  let date = "", dateEC = false, serial = 0;
+  const amharicSheet = /ዘላለም/.test(clean(rows[0][0]) + clean(rows[1] && rows[1][0]));
+  outer: for (let r = 0; r < hIdx; r++) {
     for (let c = 0; c < Math.min(rows[r].length, 6); c++) {
-      const v = clean(rows[r][c]);
-      if (/^(ቀን|date)/i.test(v) && v.length < 40) { date = v.replace(/^(ቀን|date)\s*[:\-]?/i, "").trim() || v; break; }
-      if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(v)) { date = v; break; }
+      const v = rows[r][c];
+      const s = clean(v);
+      if (/^(ቀን|date)/i.test(s)) {
+        const rest = s.replace(/^(ቀን|date)\s*[:\-]?/i, "").trim();
+        if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(rest)) { date = rest; dateEC = /ቀን/.test(s); break outer; }
+        if (/^\d{4,5}$/.test(rest)) { serial = Number(rest); break outer; }
+        for (let c2 = c + 1; c2 < Math.min(rows[r].length, 8); c2++) {
+          const v2 = rows[r][c2];
+          if (typeof v2 === "number" && v2 > 30000 && v2 < 60000) { serial = v2; break outer; }
+          const s2 = clean(v2);
+          if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(s2)) { date = s2; dateEC = /ቀን/.test(s); break outer; }
+        }
+        if (rest && rest.length < 30) { date = rest; break outer; }
+      } else if (typeof v === "number" && v > 30000 && v < 60000 && rows[r].slice(0, 3).every(x => !clean(x))) { serial = v; break outer; }
     }
+  }
+  // convert to a comparable Gregorian timestamp (approximate for EC dates)
+  let sortTs = 0;
+  if (serial) sortTs = Date.UTC(1899, 11, 30) + serial * 864e5;
+  else if (/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/.test(date)) {
+    const [, dd, mm, yy] = date.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/).map(Number);
+    const y = yy < 100 ? 2000 + yy : yy;
+    const useEC = dateEC || (amharicSheet && y <= 2020) || y <= 2020;
+    if (useEC) {
+      const base = new Date(y + 7, 8, 11).getTime();
+      sortTs = base + ((mm - 1) * 30 + (dd - 1)) * 864e5;
+    } else sortTs = new Date(y, mm - 1, dd).getTime();
   }
 
   const items = [];
@@ -86,10 +110,10 @@ for (const name of wb.SheetNames) {
     if (current.price > 0) items.push({ ...current });
   }
   if (!items.length) { skipped.push(name + " (no items)"); continue; }
-  researches.push({ client, date, sheet: clean(name), items });
+  researches.push({ client, date, sortTs, sheet: clean(name), items });
 }
 
-researches.sort((a, b) => a.client.localeCompare(b.client, "am"));
+researches.sort((a, b) => (b.sortTs || 0) - (a.sortTs || 0) || a.client.localeCompare(b.client, "am"));
 const totalItems = researches.reduce((n, r) => n + r.items.length, 0);
 fs.writeFileSync(OUT, JSON.stringify({ updatedAt: Date.now(), researches }, null, 0));
 console.log("Sheets in workbook:", wb.SheetNames.length);
