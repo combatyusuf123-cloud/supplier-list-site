@@ -1,0 +1,285 @@
+{
+  "updatedAt": 1795526400000,
+  "documents": [
+    {
+      "id": "personal-care-sku",
+      "supplier": "Personal care / FMCG",
+      "title": "SKU case-price list",
+      "source": "Photos 1-2",
+      "date": "",
+      "note": "Case quantities and prices in ETB, transcribed from the supplied photos. Some SKU codes and figures were blurred or out of focus — verify against the original document before use.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item / SKU" },
+        { "key": "pack", "label": "Case / pack" },
+        { "key": "price", "label": "Price (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "LIFEBUOY SOAP BAR BATH TOTAL FL/VAP ENDOX200G", "pack": "240", "price": 4.5 },
+        { "item": "LIFEBUOY SOAP BAR TOTAL FL/VAP ENDOX200G", "pack": "144", "price": 8.7 },
+        { "item": "LIFEBUOY SOAP BAR NATURAL LEMON 80X70G", "pack": "72", "price": 42.5 },
+        { "item": "LIFEBUOY SOAP BAR NATURAL LEMON 80X70G", "pack": "36", "price": 97.3 },
+        { "item": "LUX SOAP BAR BEAUTY GLOW 160X75G", "pack": "36", "price": 107.2 },
+        { "item": "LUX SOAP BAR NATURAL GLOW 160X75G", "pack": "72", "price": 53.6 },
+        { "item": "LUX SOAP BAR SOFT GLOW ENDOX75G", "pack": "72", "price": 53.6 },
+        { "item": "LUX SOAP BAR BEAUTY GLOW ENDOX100G", "pack": "36", "price": 107.2 },
+        { "item": "DOVE BEAUTY BAR REGULAR 100X100G", "pack": "36", "price": 107.2 },
+        { "item": "DOVE BEAUTY BAR REGULAR 80X50G", "pack": "144", "price": 26.8 },
+        { "item": "OMO HV POWDER GENA 800X20G", "pack": "48", "price": 102.6 },
+        { "item": "OMO HV POWDER GENA 100X400G", "pack": "100", "price": 29.6 },
+        { "item": "OMO HV POWDER GENA 60X22G", "pack": "72", "price": 9.6 },
+        { "item": "OMO HV POWDER GOLD 32XKG", "pack": "24", "price": 2044.8 },
+        { "item": "OMO HV POWDER GOLD 4X2KG", "pack": "4", "price": 272.4 },
+        { "item": "SUNLIGHT HV POWDER GOLD 12XKG", "pack": "12", "price": 1026.8 },
+        { "item": "SUNLIGHT HV POWDER GOLD 100X20G", "pack": "100", "price": 22 },
+        { "item": "SUNLIGHT HV POWDER HF CH/24X500G", "pack": "72", "price": 34.6 },
+        { "item": "SUNLIGHT HV POWDER 1KGX12", "pack": "12", "price": 218.5 },
+        { "item": "SIGNAL TOOTH PASTE FAMILY 80X200G", "pack": "1", "price": 2000.5 },
+        { "item": "SIGNAL TOOTH PASTE 50X120G", "pack": "144", "price": 42 },
+        { "item": "SIGNAL T/PASTE FIGHTER 50X40G", "pack": "48", "price": 12.6 },
+        { "item": "SIGNAL T/PASTE KIDS STRAWBERRY 12X60ML", "pack": "24", "price": 90 },
+        { "item": "SIGNAL TIPS KIDS 24X30ML", "pack": "24", "price": 160 },
+        { "item": "SIGNAL T/PASTE ALIGN MED CHECK 12X120ML", "pack": "24", "price": 162 },
+        { "item": "SIGNAL T/PASTE CARE 100X25ML", "pack": "72", "price": 36 },
+        { "item": "SIGNAL T/PASTE MINT FRESH 50X75ML", "pack": "72", "price": 60 },
+        { "item": "SIGNAL TP COMPLETE 6 EFFECT MAX 72X25ML", "pack": "72", "price": 86 },
+        { "item": "SUNSILK SHAMPOO ANTI-DANDRUFF MAX 12X25ML", "pack": "72", "price": 96 },
+        { "item": "SUNSILK SHAMPOO COCONUT 12X250ML", "pack": "12", "price": 174 },
+        { "item": "SUNSILK SH-POO COCONUT 12X350ML", "pack": "12", "price": 174 },
+        { "item": "SUNSILK CONDITIONER AVOCADO 12X350ML", "pack": "12", "price": 174 },
+        { "item": "SUNSILK SHAMPOO COCONUT OIL 12X350ML", "pack": "12", "price": 174 },
+        { "item": "SUNSILK SHAMPOO COCONUT 12X700ML", "pack": "12", "price": 340 },
+        { "item": "SUNSILK SHAMPOO COCONUT OIL 12X700ML", "pack": "12", "price": 291.2 },
+        { "item": "SUNSILK CONDITIONER COCONUT 12X700ML", "pack": "12", "price": 291.2 },
+        { "item": "SUNSILK SHAMPOO COCONUT 6X1LTR", "pack": "6", "price": 78 },
+        { "item": "SUNSILK CONDITIONER COCONUT 6X250ML", "pack": "24", "price": 60 },
+        { "item": "SUNSILK CONDITIONER COCONUT 4X50ML", "pack": "36", "price": 133.5 },
+        { "item": "VASELINE ALMOND SOOTHE 4X200ML", "pack": "24", "price": 204.2 },
+        { "item": "VASELINE ALMOND LOTION 4X200ML", "pack": "24", "price": 876.3 },
+        { "item": "VASELINE LOTION COCOA BUTTER 6X200ML", "pack": "24", "price": 876.3 },
+        { "item": "VASELINE LOTION COCOA PLUS 6X400ML", "pack": "54", "price": 167.4 },
+        { "item": "VASELINE LOTION ALOE VERA", "pack": "24", "price": 874.3 },
+        { "item": "VASELINE PJ ORIGINAL 14X250ML", "pack": "54", "price": 347.8 },
+        { "item": "VASELINE PJ ORIGINAL 4X25ML", "pack": "24", "price": 878.2 },
+        { "item": "VASELINE PJ ORIGINAL 12X25ML", "pack": "24", "price": 47 },
+        { "item": "VASELINE BABY 1X2X400ML", "pack": "48", "price": null },
+        { "item": "VASELINE PJ ORIGINAL 1X4X50ML", "pack": "72", "price": null },
+        { "item": "VASELINE PJ ORIGINAL 12X250ML", "pack": "144", "price": null }
+      ]
+    },
+    {
+      "id": "detergents-soaps",
+      "supplier": "Detergents & soaps price list",
+      "title": "Product price list (excl. VAT)",
+      "source": "Photo 4",
+      "date": "Oct 2024",
+      "note": "Regional distributor price list. Prices are exclusive of VAT and shown in ETB. Transcribed from the supplied photo; several product names were partly blurred.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item / description" },
+        { "key": "unit", "label": "Unit" },
+        { "key": "price", "label": "Price ex-VAT (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "ROL POWDER DETERGENT 250G X 144 SACHET", "unit": "BAG", "price": 1176 },
+        { "item": "ROL POWDER DETERGENT WHITE 100G X 480 SACHET", "unit": "BAG", "price": 884 },
+        { "item": "ROL POWDER DETERGENT WHITE 150G X 360 SACHET", "unit": "BAG", "price": 2205 },
+        { "item": "ROL POWDER DETERGENT BLUE 150G X 360 SACHET", "unit": "BAG", "price": 2243 },
+        { "item": "ROL POWDER DETERGENT 20G X 500 SACHET", "unit": "BAG", "price": 224 },
+        { "item": "ROL POWDER DETERGENT NOVEMBER 200G X 48", "unit": "BAG", "price": 1269 },
+        { "item": "ROL ALL IN ONE DETERGENT 1KG X 12", "unit": "BAG", "price": 1472 },
+        { "item": "AJAX SCOURING POWDER 12 X 500G", "unit": "CARTON", "price": 1408 },
+        { "item": "AJAX DETERGENT BAG 100G X 20", "unit": "CARTON", "price": 1575 },
+        { "item": "LARGO LIQUID DETERGENT 1KG X 12", "unit": "CARTON", "price": 2545 },
+        { "item": "LARGO LIQUID DETERGENT 1KG X 20", "unit": "CARTON", "price": 1344 },
+        { "item": "AJAX DISHWASHING DETERGENT 2KG X 6", "unit": "CARTON", "price": 1727 },
+        { "item": "IVA LIQUID DETERGENT 2LTR X 6", "unit": "CARTON", "price": 1048 },
+        { "item": "AJAX WINDOW CLEANER 500G X 12", "unit": "CARTON", "price": 1744 },
+        { "item": "TISSY PREMIUM MULTI PURPOSE SOAP 2 X 250G", "unit": "CARTON", "price": 960 },
+        { "item": "IVA PREMIUM SOAP 5 X 200G IN CARTON", "unit": "CARTON", "price": 2643 },
+        { "item": "IVA PREMIUM MULTI PURPOSE WHITE 500G X 20", "unit": "CARTON", "price": 2752 },
+        { "item": "IVA TELOW SOAP 10 X 100G X 12 IN CARTON", "unit": "CARTON", "price": 3703 },
+        { "item": "RINSO LAUNDRY SOAP 150G IN CARTON", "unit": "CARTON", "price": 1831 },
+        { "item": "TECHNIC LAUNDRY SOAP 50 X 100G", "unit": "CARTON", "price": 2315 },
+        { "item": "FESNO LAUNDRY SOAP 50 X 100G IN CARTON", "unit": "CARTON", "price": 2035 },
+        { "item": "SIRTA LAUNDRY SOAP 200G X 20 IN CARTON", "unit": "CARTON", "price": 2030 },
+        { "item": "NIGHT STATIONERY SOAP 20G X 250", "unit": "CARTON", "price": 2070 },
+        { "item": "TIFFANY TOILET SOAP WHITE 75 X 8G", "unit": "CARTON", "price": 3804 },
+        { "item": "TIFFANY TOILET SOAP WHITE 50 X 8G", "unit": "CARTON", "price": 2810 },
+        { "item": "TIFFANY TOILET SOAP 6 IN CARTON", "unit": "CARTON", "price": 3818 },
+        { "item": "PURE SOAP 4 X 100G X 12", "unit": "CARTON", "price": 2924 },
+        { "item": "PALM OIL EXTRA", "unit": "PACK", "price": 1050 },
+        { "item": "FISH LIES SUPER BAKING POWDER 100G", "unit": "PACK", "price": 330 },
+        { "item": "NAYANIK GOLDEN SELLA SAMT", "unit": "PACK", "price": 650 },
+        { "item": "COYLORINE SCOURER 1LTR X 4 PCS CTN", "unit": "CARTON", "price": 12200 },
+        { "item": "PROLENEMERIAL 10 PCS", "unit": "PACK", "price": 6000 }
+      ]
+    },
+    {
+      "id": "wholesale-cleaning",
+      "supplier": "Wholesale cleaning supplies",
+      "title": "Wholesale price list",
+      "source": "Photo 6",
+      "date": "",
+      "note": "Pack prices in ETB. VAT is 15%. Ex-VAT and VAT-inclusive prices transcribed from the supplied photo.",
+      "warning": false,
+      "columns": [
+        { "key": "item", "label": "Description" },
+        { "key": "unit", "label": "Unit" },
+        { "key": "ex", "label": "Ex-VAT (ETB)", "num": true },
+        { "key": "inc", "label": "Incl. VAT (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "LAUNDRY GEL (5L X 4)", "unit": "Pack", "ex": 3316.52, "inc": 3814 },
+        { "item": "DETERGENT (CELLULOSE)", "unit": "Pack", "ex": 2164.35, "inc": 2489 },
+        { "item": "LAUNDRY GEL (5L X 4)", "unit": "Pack", "ex": 2164.35, "inc": 2489 },
+        { "item": "DISHWASH (1L X 6)", "unit": "Pack", "ex": 2150.05, "inc": 2473 },
+        { "item": "DISHWASH (1L X 4)", "unit": "Pack", "ex": 2401, "inc": 2762 },
+        { "item": "DISHWASH (5L X 4)", "unit": "Pack", "ex": 2649.3, "inc": 3047 },
+        { "item": "DISHWASH (5L X 4)", "unit": "Pack", "ex": 1417.3, "inc": 1630 },
+        { "item": "HAND WASH (750ML X 12)", "unit": "Pack", "ex": 772.7, "inc": 888 },
+        { "item": "HAND WASH (5L X 4)", "unit": "Pack", "ex": 3393.7, "inc": 3903 },
+        { "item": "HAND WASH (500ML X 12)", "unit": "Pack", "ex": 2356.57, "inc": 2710 },
+        { "item": "WINDOW CLEANER (750ML X 12)", "unit": "Pack", "ex": 1369.55, "inc": 1575 },
+        { "item": "SUNLIGHT (5L X 4)", "unit": "Pack", "ex": 2545.6, "inc": 2928 },
+        { "item": "SUNLIGHT (150G)", "unit": "Pack", "ex": 2548.6, "inc": 2931 },
+        { "item": "AJAX DISH & TOILET CLEANER (1L)", "unit": "Pack", "ex": 1034.78, "inc": 1190 },
+        { "item": "AJAX POWDER (1KG X 12)", "unit": "Pack", "ex": 1031.91, "inc": 1187 },
+        { "item": "CONDITIONER (3L X 4)", "unit": "Pack", "ex": 3968.91, "inc": 4564 },
+        { "item": "CONDITIONER (3L X 4)", "unit": "Pack", "ex": 2914.74, "inc": 3352 },
+        { "item": "BLEACH (5L X 4)", "unit": "Pack", "ex": 1154.78, "inc": 1328 },
+        { "item": "BLEACH (1L X 12)", "unit": "Pack", "ex": 609.5, "inc": 701 },
+        { "item": "BLEACH (1L X 12)", "unit": "Pack", "ex": 1080, "inc": 1242 },
+        { "item": "BLEACH (800ML X 12)", "unit": "Pack", "ex": 1408, "inc": 1619 },
+        { "item": "BLEACH (1L X 12)", "unit": "Pack", "ex": 482.87, "inc": 555 },
+        { "item": "POWDER SOAP (500G X 12)", "unit": "Pack", "ex": 1741.74, "inc": 2003 },
+        { "item": "POWDER SOAP (3KG X 4)", "unit": "Pack", "ex": 3777.39, "inc": 4344 },
+        { "item": "ANTISEPTIC DISINFECTANT (500ML X 12)", "unit": "Pack", "ex": 1707.8, "inc": 1964 },
+        { "item": "ANTISEPTIC DETERGENT 1L", "unit": "Pack", "ex": 1033.17, "inc": 1188 },
+        { "item": "ACIDIC CERAMIC & TOILET CLEANER (5L X 4)", "unit": "Pack", "ex": 3563.48, "inc": 4098 },
+        { "item": "DRAIN OPENER (1L)", "unit": "Pack", "ex": 1104.25, "inc": 1270 },
+        { "item": "MULTIPURPOSE (5L X 4)", "unit": "Pack", "ex": 3033.78, "inc": 3489 },
+        { "item": "SHAMPOO (5L X 4)", "unit": "Pack", "ex": 2489.6, "inc": 2863 },
+        { "item": "ALL PURPOSE CLEANER (1L X 6)", "unit": "Pack", "ex": 3413.78, "inc": 3927 },
+        { "item": "WINDOW CLEANER (1L X 6)", "unit": "Pack", "ex": 1093.04, "inc": 1257 },
+        { "item": "SHOWER GEL (5L X 4)", "unit": "Pack", "ex": 1515.13, "inc": 1742 },
+        { "item": "SHOWER GEL (5L X 4)", "unit": "Pack", "ex": 2399.13, "inc": 2759 }
+      ]
+    },
+    {
+      "id": "nice-tissues",
+      "supplier": "Nice / tissue products",
+      "title": "Price amendment notice",
+      "source": "Photo 9",
+      "date": "14 Oct 2024",
+      "note": "Selling price per carton, VAT included. Effective 14 October 2024.",
+      "warning": false,
+      "columns": [
+        { "key": "item", "label": "Description" },
+        { "key": "unit", "label": "Pack" },
+        { "key": "price", "label": "Price incl. VAT (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "Nice Table Napkin", "unit": "48 pcs", "price": 2736 },
+        { "item": "Nice Pocket Paper", "unit": "24 pcs", "price": 2858 },
+        { "item": "Nice Toilet Napkin", "unit": "120 pcs", "price": 1265 },
+        { "item": "Salmon Pocket Napkin", "unit": "120 pcs", "price": 897 },
+        { "item": "Nice Kitchen Towel", "unit": "60 pcs", "price": 2778 },
+        { "item": "Nice Car Napkin", "unit": "100 pcs", "price": 3064 },
+        { "item": "Nice Car Napkin", "unit": "50 pcs", "price": 2943 },
+        { "item": "Nice Car Napkin Cube", "unit": "27 pcs", "price": 2298 }
+      ]
+    },
+    {
+      "id": "chemicals-amharic",
+      "supplier": "Chemicals (tender sheet)",
+      "title": "Chemical price list",
+      "source": "Photo 3",
+      "date": "",
+      "note": "Amharic tender price sheet with a 15% VAT column. The item names were not legible in the photo; figures below are transcribed from the visible number columns and need checking against the original.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item" },
+        { "key": "ex", "label": "Ex-VAT (ETB)", "num": true },
+        { "key": "inc", "label": "Incl. VAT (ETB)", "num": true },
+        { "key": "total", "label": "Total", "num": true }
+      ],
+      "items": [
+        { "item": "Item 1 (name not legible)", "ex": 3719.18, "inc": 4276.06, "total": 47 },
+        { "item": "Item 2 (name not legible)", "ex": 21614, "inc": 24856.1, "total": 950 },
+        { "item": "Item 3 (name not legible)", "ex": 276.96, "inc": 318.5, "total": 550 },
+        { "item": "Item 4 (name not legible)", "ex": 4352.22, "inc": 5005.05, "total": 900 },
+        { "item": "Item 5 (name not legible)", "ex": 710.18, "inc": 816.7, "total": 1000 }
+      ]
+    },
+    {
+      "id": "ethio-asian",
+      "supplier": "Ethio-Asian Industries S.C.",
+      "title": "Quotation",
+      "source": "Photo 5",
+      "date": "",
+      "note": "The photo was upside down and the item descriptions were too blurred to read reliably. Please supply a clearer, straightened photo to enter these five quotation lines.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item / pack" },
+        { "key": "unit", "label": "Unit" },
+        { "key": "price", "label": "Unit price (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "Item 1 — pack details not legible", "unit": "CN", "price": null },
+        { "item": "Item 2 — pack details not legible", "unit": "CN", "price": null },
+        { "item": "Item 3 — pack details not legible", "unit": "CN", "price": null },
+        { "item": "Item 4 — pack details not legible", "unit": "CN", "price": null },
+        { "item": "Item 5 — pack details not legible", "unit": "CN", "price": null }
+      ]
+    },
+    {
+      "id": "ethiopian-trade-house",
+      "supplier": "Ethiopian Trade House PLC",
+      "title": "Importers price list",
+      "source": "Photo 7",
+      "date": "",
+      "note": "A long two-page price list of personal-care and household items. The text is too small in the supplied photo to transcribe accurately — please supply a sharper photo or the source file.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item" },
+        { "key": "price", "label": "Price (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "Price list not transcribed — clearer image required", "price": null }
+      ]
+    },
+    {
+      "id": "proforma-invoice",
+      "supplier": "Naulty Engineering PLC",
+      "title": "Proforma invoice",
+      "source": "Photo 8",
+      "date": "08/11/2024",
+      "note": "The invoice contains handwritten Amharic price notes and was photographed upside down. It is not transcribed — please supply a clearer, straightened photo or the source document.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item" },
+        { "key": "price", "label": "Price (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "Invoice not transcribed — clearer image required", "price": null }
+      ]
+    },
+    {
+      "id": "purewood",
+      "supplier": "Purewood Paper & Packaging PLC",
+      "title": "Paper product price list",
+      "source": "Photos 10-11",
+      "date": "",
+      "note": "Price list valid for 7 days. The photo was upside down and the fine print too small to read reliably — please supply a sharper, straightened photo or the source file.",
+      "warning": true,
+      "columns": [
+        { "key": "item", "label": "Item" },
+        { "key": "price", "label": "Price (ETB)", "num": true }
+      ],
+      "items": [
+        { "item": "Price list not transcribed — clearer image required", "price": null }
+      ]
+    }
+  ]
+}
