@@ -339,7 +339,7 @@ body::before{content:none}
 .nav button .cnt{flex:none;font-size:11px;color:#9ba1ab;font-variant-numeric:tabular-nums}
 .nav button:hover{background:#f1f2f4;color:#191b1f}
 .nav button:hover .ico,.nav button:hover .cnt{color:#191b1f}
-.nav button.active{background:#ececee;color:#191b1f;font-weight:600}
+.nav button.active{background:#ececee;color:#191b1f;font-weight:600;box-shadow:inset 2px 0 0 #111}
 .nav button.active .ico,.nav button.active .cnt{color:#191b1f}
 .nav button.active::before{display:none}
 .rail-bottom{margin-top:auto;display:grid;gap:2px;padding-top:10px;border-top:1px solid #ebedf0}
@@ -384,7 +384,8 @@ body::before{content:none}
 .page-head h1{margin:6px 0 3px;font-size:25px;font-weight:700;letter-spacing:-.02em;color:#191b1f}
 .page-head p{margin:0;color:#6f7480;font-size:13.5px}
 .btn{height:38px;padding:0 16px;border:none;border-radius:9px;background:#111;color:#fff;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .12s}
-.btn:hover{background:#2b2d33}
+.btn{transition:background .12s,transform .12s,box-shadow .12s}
+.btn:hover{background:#2b2d33;transform:translateY(-1px);box-shadow:0 6px 14px -8px rgba(16,17,20,.5)}
 .btn.btn-light{background:#fff;color:#191b1f;border:1px solid #ebedf0}
 .btn.btn-light:hover{background:#fafafa}
 
@@ -574,12 +575,39 @@ tbody tr:last-child td{border-bottom:none}
 .mr-head{border-top:1px solid #ebedf0}
 #mrHost .mr-head{border-top-width:2px}
 #mrHost .table-wrap:last-child table{border-bottom:none}
-#plHost .mr-head{align-items:flex-start}
-#plHost .mr-head h2{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+/* ============ Price list polish ============ */
+.pl-page{animation:fade .28s ease both}
+.pl-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;margin-bottom:20px;padding:28px 30px;border:1px solid #e8ebef;border-radius:18px;background:linear-gradient(115deg,#fff 8%,#f8fafb 52%,#f1f6f5 100%);box-shadow:0 1px 2px rgba(16,17,20,.03),0 12px 30px -22px rgba(16,17,20,.35)}
+.pl-hero::after{content:"";position:absolute;right:-70px;top:-110px;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side,rgba(20,184,166,.16),transparent 70%);pointer-events:none}
+.pl-hero::before{content:"";position:absolute;right:88px;bottom:-90px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(17,24,39,.05);pointer-events:none}
+.pl-hero-copy{position:relative;z-index:1;min-width:0}
+.pl-hero h1{margin:7px 0 5px;font-size:29px;font-weight:700;letter-spacing:-.025em;color:#111}
+.pl-hero p{margin:0;max-width:64ch;color:#6f7480;font-size:13.5px}
+.pl-hero-mark{position:relative;z-index:1;flex:none;height:70px;width:70px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#1b1e23,#0b0d10);color:#fff;box-shadow:0 14px 26px -10px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14)}
+.pl-hero-mark svg{width:30px;height:30px}
+.pl-stats .stat-cell{transition:background .15s}
+.pl-stats .stat-cell:hover{background:#fafbfc}
+.pl-stats .stat-cell strong{font-variant-numeric:tabular-nums}
+.pl-panel{margin-top:22px;box-shadow:0 1px 2px rgba(16,17,20,.03),0 18px 40px -30px rgba(16,17,20,.35)}
+.pl-toolbar{background:linear-gradient(180deg,#fcfdfd,#fff)}
+.pl-toolbar .search input:focus,.pl-toolbar .field:focus{border-color:#6ee7c7;box-shadow:0 0 0 3px rgba(20,184,166,.12)}
+.pl-toolbar .count-badge{background:#eefaf6;color:#0f766e}
+.pl-doc{animation:rise .5s cubic-bezier(.22,1,.36,1) both}
+#plHost .pl-doc{align-items:flex-start}
+#plHost .pl-doc h2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;letter-spacing:-.01em}
 .pl-src{display:inline-block;padding:2px 7px;border:1px solid #ebedf0;border-radius:6px;background:#fafafa;color:#9ba1ab;font-size:10.5px;font-weight:600;letter-spacing:.2px}
+.pl-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;border:1px solid transparent;font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap}
+.pl-badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.pl-badge.ok{background:#eefaf4;border-color:#d7f0e2;color:#15803d}
+.pl-badge.warn{background:#fff8e8;border-color:#f6e3c4;color:#a16415}
 .pl-note{margin-top:6px;max-width:92ch;color:#6f7480;font-size:11.5px;line-height:1.5}
 .pl-note.warn{color:#9a6a1a}
-.pl-num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#191b1f}
+.pl-table table{min-width:640px}
+.pl-table th{background:#fafbfc;letter-spacing:.6px}
+.pl-table tbody tr{transition:background .12s,box-shadow .12s}
+.pl-table tbody tr:hover{background:#f6fbfa;box-shadow:inset 3px 0 0 #14b8a6}
+.pl-table td{padding:11px 16px}
+.pl-num{text-align:right;font-family:var(--mono);font-size:12px;font-weight:600;color:#0f172a;font-variant-numeric:tabular-nums;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -880,45 +908,55 @@ async function renderMarket(){
  draw();
 }
 let priceData=null;
-const PR_T={eyebrow:"Price archive",title:"Price list",load:"Loading price lists…",fail:"Could not load the price lists. Refresh to try again.",desc:"Supplier price lists and quotations transcribed from the supplied documents. All prices are in ETB.",s1:"Price lists",s1s:"supplier documents",s2:"Price points",s2s:"item quotes recorded",s3:"Archive updated",s3s:"built from supplied price lists",s4:"Currency",s4s:"prices as quoted",search:"Search item, supplier or document…",all:"All price lists",nodate:"date not recorded",quotes:"items",noq:"No matching prices",nos:"Try another search or pick a different price list.",cnt:"items"};
+const PR_T={eyebrow:"Price archive",title:"Price list",load:"Loading price lists…",fail:"Could not load the price lists. Refresh to try again.",desc:"Supplier price lists and quotations transcribed from the supplied documents. All prices are in ETB.",s1:"Price lists",s1s:"supplier documents",s2:"Price points",s2s:"item quotes recorded",s3:"Archive updated",s3s:"built from supplied price lists",s4:"Currency",s4s:"prices as quoted",search:"Search item, supplier or document…",all:"All price lists",nodate:"date not recorded",quotes:"items",noq:"No matching prices",nos:"Try another search or pick a different price list.",cnt:"items",verify:"Check figures",ready:"Transcribed"};
+const PL_RECEIPT=svg('<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>');
 async function renderPriceList(){
   const t=PR_T;
+  const hero=(body)=>`<div class="pl-page"><div class="pl-hero"><div class="pl-hero-copy">${body}</div><div class="pl-hero-mark" aria-hidden="true">${PL_RECEIPT}</div></div></div>`;
   if(!priceData){
-    $("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.load}</p></div></div>`;
-    try{const r=await fetch("/prices.json");priceData=await r.json();}catch(e){$("#content").innerHTML=`<div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.fail}</p></div></div>`;return;}
+    $("#content").innerHTML=hero(`<div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.load}</p>`);
+    try{const r=await fetch("/prices.json");priceData=await r.json();}catch(e){$("#content").innerHTML=hero(`<div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.fail}</p>`);return;}
   }
   const D=priceData.documents||[],totalItems=D.reduce((n,d)=>n+((d.items||[]).length),0);
   $("#content").innerHTML=`
-  <div class="page-head"><div><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.desc}</p></div></div>
-  <div class="stat-strip">
-   <div class="stat-cell"><label>${t.s1}</label><strong>${D.length}</strong><small>${t.s1s}</small></div>
-   <div class="stat-cell"><label>${t.s2}</label><strong>${totalItems}</strong><small>${t.s2s}</small></div>
-   <div class="stat-cell"><label>${t.s3}</label><strong style="font-size:16px;padding-top:9px">${priceData.updatedAt?when(priceData.updatedAt):"—"}</strong><small>${t.s3s}</small></div>
-   <div class="stat-cell"><label>${t.s4}</label><strong style="font-size:16px;padding-top:9px">ETB</strong><small>${t.s4s}</small></div>
-  </div>
-  <div class="panel" style="margin-top:26px"><div class="toolbar">
-   <div class="search">${ui.search}<input id="plSearch" placeholder="${t.search}"></div>
-   <select class="field" id="plDoc"><option value="">${t.all}</option>${D.map(d=>`<option value="${esc(d.id)}">${esc(d.supplier)} — ${esc(d.title)}</option>`).join("")}</select>
-   <span class="count-badge" id="plCount"></span>
-  </div><div id="plHost"></div></div>`;
+  <div class="pl-page">
+   <div class="pl-hero">
+    <div class="pl-hero-copy"><div class="eyebrow">${t.eyebrow}</div><h1>${t.title}</h1><p>${t.desc}</p></div>
+    <div class="pl-hero-mark" aria-hidden="true">${PL_RECEIPT}</div>
+   </div>
+   <div class="stat-strip pl-stats">
+    <div class="stat-cell"><label>${t.s1}</label><strong>${D.length}</strong><small>${t.s1s}</small></div>
+    <div class="stat-cell"><label>${t.s2}</label><strong>${totalItems}</strong><small>${t.s2s}</small></div>
+    <div class="stat-cell"><label>${t.s3}</label><strong style="font-size:16px;padding-top:9px">${priceData.updatedAt?when(priceData.updatedAt):"—"}</strong><small>${t.s3s}</small></div>
+    <div class="stat-cell"><label>${t.s4}</label><strong style="font-size:16px;padding-top:9px">ETB</strong><small>${t.s4s}</small></div>
+   </div>
+   <div class="panel pl-panel"><div class="toolbar pl-toolbar">
+    <div class="search">${ui.search}<input id="plSearch" placeholder="${t.search}"></div>
+    <select class="field" id="plDoc"><option value="">${t.all}</option>${D.map(d=>`<option value="${esc(d.id)}">${esc(d.supplier)} — ${esc(d.title)}</option>`).join("")}</select>
+    <span class="count-badge" id="plCount"></span>
+   </div><div id="plHost"></div></div>
+  </div>`;
   const draw=()=>{
    const q=$("#plSearch").value.toLowerCase(),sel=$("#plDoc").value;
    let n=0;
-   $("#plHost").innerHTML=D.filter(d=>!sel||d.id===sel).map(d=>{
-    const cols=d.columns||[];
-    const rows=(d.items||[]).filter(x=>[d.supplier,d.title,d.source||"",...Object.values(x)].join(" ").toLowerCase().includes(q));
-    if(!rows.length)return"";
-    n+=rows.length;
-    const note=d.note?`<div class="pl-note${d.warning?" warn":""}">${esc(d.note)}</div>`:"";
-    const heads=cols.map(c=>`<th>${esc(c.label)}</th>`).join("");
-    const body=rows.map(x=>`<tr>${cols.map(c=>{
-      const v=x[c.key],empty=v===null||v===undefined||v==="";
-      const val=empty?"—":(c.num?Number(v).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2}):esc(v));
-      return `<td${c.num?' class="pl-num"':""}>${val}</td>`;
-    }).join("")}</tr>`).join("");
-    return `<div class="mr-head panel-head"><div><h2>${esc(d.supplier)}${d.source?` <span class="pl-src">${esc(d.source)}</span>`:""}</h2><p>${esc(d.title)}${d.date?" · "+esc(d.date):""} · ${rows.length} ${t.quotes}</p>${note}</div></div>
-    <div class="table-wrap"><table><thead><tr>${heads}</tr></thead><tbody>${body}</tbody></table></div>`;
-   }).join("")||`<div class="empty"><b>${t.noq}</b>${t.nos}</div>`;
+    let shown=0;
+    $("#plHost").innerHTML=D.filter(d=>!sel||d.id===sel).map(d=>{
+     const cols=d.columns||[];
+     const rows=(d.items||[]).filter(x=>[d.supplier,d.title,d.source||"",...Object.values(x)].join(" ").toLowerCase().includes(q));
+     if(!rows.length)return"";
+     n+=rows.length;
+     const delay=Math.min(shown++*55,330);
+     const badge=`<span class="pl-badge ${d.warning?"warn":"ok"}">${d.warning?t.verify:t.ready}</span>`;
+     const note=d.note?`<div class="pl-note${d.warning?" warn":""}">${esc(d.note)}</div>`:"";
+     const heads=cols.map(c=>`<th>${esc(c.label)}</th>`).join("");
+     const body=rows.map(x=>`<tr>${cols.map(c=>{
+       const v=x[c.key],empty=v===null||v===undefined||v==="";
+       const val=empty?"—":(c.num?Number(v).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2}):esc(v));
+       return `<td${c.num?' class="pl-num"':""}>${val}</td>`;
+     }).join("")}</tr>`).join("");
+     return `<div class="mr-head panel-head pl-doc" style="animation-delay:${delay}ms"><div><h2>${esc(d.supplier)}${d.source?` <span class="pl-src">${esc(d.source)}</span>`:""}${badge}</h2><p>${esc(d.title)}${d.date?" · "+esc(d.date):""} · ${rows.length} ${t.quotes}</p>${note}</div></div>
+     <div class="table-wrap pl-table"><table><thead><tr>${heads}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }).join("")||`<div class="empty"><b>${t.noq}</b>${t.nos}</div>`;
    $("#plCount").textContent=n+" "+t.cnt;
   };
   $("#plSearch").addEventListener("input",draw);$("#plDoc").addEventListener("change",draw);
